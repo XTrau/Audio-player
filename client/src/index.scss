@@ -1,0 +1,254 @@
+* {
+  font-family: 'DM Sans', sans-serif;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+input {
+  border: none;
+  outline: none;
+}
+
+li {
+  list-style: none;
+}
+
+body {
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: inherit;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 5px;
+    border: none;
+  }
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  .wrapper {
+    margin-top: 100px;
+    padding: 20px;
+    border-radius: 10px;
+    height: 100%;
+    width: 60%;
+    background: rgba(209, 209, 209, 0.564);
+
+    h1 {
+      margin-left: 20px;
+      margin-bottom: 20px;
+    }
+
+    .track-list {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .wrapper-bottom {
+      margin-top: 10px;
+      margin-right: 10px;
+      text-align: right;
+
+      b {
+        opacity: 0.75;
+      }
+    }
+  }
+}
+
+.play-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  transition: background 0.1s ease-in-out;
+
+  span {
+    &.play-img {
+      border: 10px solid transparent;
+      border-left: 20px solid rgb(181, 181, 181);
+      transform: translateX(25%);
+      width: 0;
+      height: 0;
+    }
+
+    &.pause-img {
+      display: block;
+      height: 20px;
+      width: 14px;
+      border-left: 4px solid rgb(181, 181, 181);
+      border-right: 4px solid rgb(181, 181, 181);
+    }
+  }
+
+  &:hover {
+    border: none;
+    outline: none;
+    span {
+      &.play-img {
+        border-left: 20px solid rgb(255, 255, 255);
+      }
+
+      &.pause-img {
+        border-left: 3px solid rgb(255, 255, 255);
+        border-right: 3px solid rgb(255, 255, 255);
+      }
+    }
+  }
+}
+
+.three-dot-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  transition: background 0.1s ease-in-out;
+
+  &:hover {
+    background: black;
+
+    .three-dot {
+      background: white;
+
+      &::before {
+        content: '';
+        background: white;
+      }
+
+      &::after {
+        content: '';
+        background: white;
+      }
+    }
+  }
+
+  .three-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #d2d2d2;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 4px;
+      background: rgb(210, 210, 210);
+      border-radius: 50%;
+      transform: translateY(-150%);
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 4px;
+      background: rgb(210, 210, 210);
+      border-radius: 50%;
+      transform: translateY(50%);
+    }
+  }
+}
+
+.track-controller {
+  color: white;
+  position: fixed;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  bottom: 0;
+  padding: 10px 10px;
+  background: rgba(84, 84, 84, 0.95);
+
+  .controls {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+
+    .volume-value {
+      position: absolute;
+      user-select: none;
+      width: 0;
+      height: 10%;
+      bottom: 0;
+    }
+
+    button {
+      color: white;
+      font-size: 16px;
+      margin: 0 10px;
+      border-radius: 50%;
+    }
+  }
+
+  .audio-time-controller {
+    flex: 1;
+    padding: 0 30px;
+    input {
+      width: 100%;
+    }
+
+    .times {
+      display: flex;
+      justify-content: space-between;
+
+      b {
+        opacity: 0.5;
+      }
+    }
+  }
+
+  .track-info {
+    display: flex;
+    align-items: center;
+
+    img {
+      border-radius: 10px;
+      margin: 0 10px;
+    }
+
+    .track-description {
+      h2 {
+        font-size: 20px;
+      }
+
+      b {
+        font-size: 14px;
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+footer {
+  height: 300px;
+}

@@ -1,0 +1,100 @@
+li {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 10px;
+  background: white;
+  margin-bottom: 15px;
+  transition: background 0.1s ease-in-out;
+
+  &.play {
+    background: linear-gradient(135deg, rgb(192, 192, 192), rgb(118, 118, 118));
+
+    &:hover {
+      background: linear-gradient(
+        135deg,
+        rgb(210, 210, 210),
+        rgb(131, 131, 131)
+      );
+    }
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, rgb(209, 209, 209), rgb(180, 180, 180)) ;
+  }
+
+  .track-info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    b {
+      font-size: 12px;
+      opacity: 0.5;
+    }
+
+    .title {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      span {
+        font-weight: 600;
+      }
+
+      b {
+        margin-right: 10px;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  button {
+    margin: 0 5px;
+  }
+
+  img {
+    border-radius: 8px;
+    margin: 0 10px;
+    user-select: none;
+  }
+
+  .play-btn {
+    scale: .8;
+
+    span {
+      &.play-img {
+        border-left: 20px solid rgb(129, 129, 129);
+      }
+  
+      &.pause-img {
+        border-left: 4px solid rgb(129, 129, 129);
+        border-right: 4px solid rgb(129, 129, 129);
+      }
+    }
+  
+    &:hover {
+      background: black;
+    }
+  }
+
+  .like-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.1s ease-in-out;
+    border-radius: 50%;
+    margin-left: 10px;
+  }
+
+  img {
+    margin-right: 10px;
+  }
+}
