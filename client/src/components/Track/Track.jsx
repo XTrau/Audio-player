@@ -45,7 +45,7 @@ function Track({ track, currentTrack, paused, selectTrack, playTrack, pauseTrack
       >
         <span className={playNow ? 'pause-img' : 'play-img'}></span>
       </button>
-      <img src={`${track.img}`} alt='preview' width={50} />
+      <img src={`${track.image}`} alt='preview' width={50} />
       <div className='track-info'>
         <div className='title'>
           <span>{track.title}</span>
