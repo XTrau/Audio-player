@@ -1,19 +1,29 @@
 import React, {useEffect, useState} from 'react'
+import {useSelector} from "react-redux";
 
-function TrackController({trackControllerProps: {currentTrack, audioRef, toPrevTrack, toNextTrack, paused, playTrack, pauseTrack}}) {
+function TrackController({
+                           trackControllerProps: {
+                             audioRef,
+                             toPrevTrack,
+                             toNextTrack,
+                             playTrack,
+                             pauseTrack
+                           }
+                         }) {
+  const currentTrack = useSelector(store => store.currentTrack)
   const [trackTime, setTrackTime] = useState(0)
   const [currentTime, setCurrentTime] = useState('00:00')
   const [durationTime, setDurationTime] = useState('00:00')
   const [volume, setVolume] = useState(localStorage.getItem('volume'))
 
   useEffect(() => {
-    audioRef.current.volume = volume / 100
-  }, [])
+    audioRef.current.volume = (volume / 100).toFixed(2)
+  }, [volume, audioRef])
 
   const updateTrackTime = () => {
     const percent =
       audioRef.current.currentTime / (audioRef.current.duration / 100)
-    setTrackTime(percent)
+    setTrackTime(prev => isNaN(percent) ? 0 : percent)
     getCurrentTime()
   }
 
@@ -25,7 +35,6 @@ function TrackController({trackControllerProps: {currentTrack, audioRef, toPrevT
 
   const onChangeVolume = e => {
     setVolume(e.target.value)
-    audioRef.current.volume = (e.target.value / 100).toFixed(2)
     localStorage.setItem('volume', e.target.value)
   }
 
@@ -52,8 +61,9 @@ function TrackController({trackControllerProps: {currentTrack, audioRef, toPrevT
       <audio
         src={currentTrack.audio}
         onEnded={toNextTrack}
-        onTimeUpdate={updateTrackTime}
+        onLoadedMetadata={getDurationTime}
         ref={audioRef}
+        onTimeUpdate={updateTrackTime}
       ></audio>
 
       <div className='controls'>
@@ -62,9 +72,9 @@ function TrackController({trackControllerProps: {currentTrack, audioRef, toPrevT
         </button>
         <button
           className='play-btn'
-          onClick={paused ? playTrack : pauseTrack}
+          onClick={currentTrack.paused ? playTrack : pauseTrack}
         >
-          <span className={paused ? 'play-img' : 'pause-img'}></span>
+          <span className={currentTrack.paused ? 'play-img' : 'pause-img'}></span>
         </button>
         <button>
           <span onClick={toNextTrack}>next</span>
@@ -91,7 +101,7 @@ function TrackController({trackControllerProps: {currentTrack, audioRef, toPrevT
         <input
           className='volume-range'
           type='range'
-          value={volume}
+          defaultValue={volume}
           onChangeCapture={onChangeVolume}
         />
         <span className='volume-value' style={{left: `${volume - -4}px`}}>

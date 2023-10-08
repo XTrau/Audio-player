@@ -2,15 +2,15 @@ import React from 'react'
 import Track from '../components/Track/Track'
 
 function Favorite({
-  favoriteList,
-  search,
-  selectTrack,
-  playTrack,
-  pauseTrack,
-  audioRef,
-  currentTrack,
-  paused
-}) {
+                    favoriteList,
+                    search,
+                    selectTrack,
+                    playTrack,
+                    pauseTrack,
+                    audioRef,
+                    addToFavorite,
+                    removeFromFavorite
+                  }) {
   return (
     <>
       <h1>Избранное</h1>
@@ -26,6 +26,7 @@ function Favorite({
               )
                 return true
             }
+            return false
           })
           .map((track, index) => (
             <Track
@@ -33,10 +34,12 @@ function Favorite({
               track={track}
               audioRef={audioRef}
               selectTrack={selectTrack}
+              currentList={favoriteList}
               playTrack={playTrack}
               pauseTrack={pauseTrack}
-              currentTrack={currentTrack}
-              paused={paused}
+              addToFavorite={addToFavorite}
+              removeFromFavorite={removeFromFavorite}
+              liked={favoriteList.includes(track)}
             />
           ))}
       </ul>

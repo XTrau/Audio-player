@@ -1,8 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import './Header.scss'
 
-function Header({ search, setSearch }) {
+function Header({headerProps: {search, setSearch}}) {
   return (
     <header>
       <div className='header-left'>

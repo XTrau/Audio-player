@@ -7,6 +7,8 @@ import Music from './pages/Music'
 import Favorite from './pages/Favorite'
 import About from './pages/About'
 
+import {useDispatch, useSelector} from "react-redux";
+
 function App() {
   const [trackList, setTrackList] = useState([{
     id: 0,
@@ -32,43 +34,40 @@ function App() {
   const [nextTracks, setNextTracks] = useState([])
   const [prevTracks, setPrevTracks] = useState([])
 
-  const [search, setSearch] = useState('')
-  const [currentTrack, setCurrentTrack] = useState({
-    id: -1,
-    title: 'Loading...',
-    authors: 'Loading...',
-    image: '',
-    audio: ''
-  })
-  const [paused, setPaused] = useState(true)
+  const currentTrack = useSelector(store => store.currentTrack)
+  const dispatch = useDispatch()
 
+  const [search, setSearch] = useState('')
   const audioRef = useRef()
 
+  useEffect(() => {
+    dispatch({type: 'CHANGE_TRACK', payload: trackList[0]})
+  }, [])
+
   function playTrack() {
-    setPaused(false)
+    dispatch({type: 'PLAY_TRACK'})
     audioRef.current.play()
   }
 
   function pauseTrack() {
-    setPaused(true)
+    dispatch({type: 'PAUSE_TRACK'})
     audioRef.current.pause()
   }
 
-  function selectTrack(track) {
+  function selectTrack(track, list) {
     const newNextList = []
     const newPrevList = []
-    let prevEnded = false
-    for (let el of trackList) {
-      if (el.title === track.title) {
-        prevEnded = true
-        continue
-      }
-
-      if (prevEnded) newNextList.push(el)
-      else newPrevList.push(el)
+    let center = false
+    for (const el of list) {
+      if (el === track)
+        center = true
+      else if (!center)
+        newPrevList.push(el)
+      else
+        newNextList.push(el)
     }
 
-    setCurrentTrack(track)
+    dispatch({type: 'CHANGE_TRACK', payload: track})
     setNextTracks(newNextList)
     setPrevTracks(newPrevList)
 
@@ -77,53 +76,75 @@ function App() {
 
   function toPrevTrack() {
     if (prevTracks.length === 0) {
-      selectTrack(trackList[trackList.length - 1])
+      const newPrevList = [currentTrack, ...nextTracks]
+      newPrevList.pop()
+      setPrevTracks(newPrevList)
+      dispatch({type: 'CHANGE_TRACK', payload: nextTracks[nextTracks.length - 1]})
+      setNextTracks([])
+
       setTimeout(() => playTrack(), 0)
       return
     }
-    const newNextList = nextTracks
-    const newPrevList = prevTracks
-    setCurrentTrack(prevTracks[prevTracks.length - 1])
-    newNextList.unshift(currentTrack)
+
+    const newPrevList = [...prevTracks]
+    const newNextList = [currentTrack, ...nextTracks]
+    dispatch({type: 'CHANGE_TRACK', payload: prevTracks[prevTracks.length - 1]})
     newPrevList.pop()
-    setNextTracks(newNextList)
+
     setPrevTracks(newPrevList)
+    setNextTracks(newNextList)
 
     setTimeout(() => playTrack(), 0)
   }
 
   function toNextTrack() {
     if (nextTracks.length === 0) {
-      selectTrack(trackList[0])
+      const newNextList = [...prevTracks, currentTrack]
+      newNextList.shift()
+      setNextTracks(newNextList)
+      dispatch({type: 'CHANGE_TRACK', payload: prevTracks[0]})
+      setPrevTracks([])
+
+      setTimeout(() => playTrack(), 0)
       return
     }
 
-    const newNextList = nextTracks
-    const newPrevList = prevTracks
-    setCurrentTrack(nextTracks[0])
+    const newPrevList = [...prevTracks, currentTrack]
+    const newNextList = [...nextTracks]
+    dispatch({type: 'CHANGE_TRACK', payload: nextTracks[0]})
     newNextList.shift()
-    newPrevList.push(currentTrack)
-    setNextTracks(newNextList)
+
     setPrevTracks(newPrevList)
+    setNextTracks(newNextList)
 
     setTimeout(() => playTrack(), 0)
   }
 
+  const addToFavorite = (track) => {
+    setFavoriteList(prev => [...prev, track])
+  }
+
+  const removeFromFavorite = (track) => {
+    setFavoriteList(prev => prev.filter(el => el !== track))
+  }
+
   return (
-    <Layout trackControllerProps={{currentTrack, audioRef, toPrevTrack, toNextTrack, paused, playTrack, pauseTrack}}>
+    <Layout trackControllerProps={{audioRef, toPrevTrack, toNextTrack, playTrack, pauseTrack}}
+            headerProps={{search, setSearch}}>
       <Routes>
         <Route
           path='/'
           element={
             <Music
               trackList={trackList}
+              favoriteList={favoriteList}
               search={search}
               selectTrack={selectTrack}
               playTrack={playTrack}
               pauseTrack={pauseTrack}
               audioRef={audioRef}
-              currentTrack={currentTrack}
-              paused={paused}
+              addToFavorite={addToFavorite}
+              removeFromFavorite={removeFromFavorite}
             />
           }
         />
@@ -137,8 +158,8 @@ function App() {
               playTrack={playTrack}
               pauseTrack={pauseTrack}
               audioRef={audioRef}
-              currentTrack={currentTrack}
-              paused={paused}
+              addToFavorite={addToFavorite}
+              removeFromFavorite={removeFromFavorite}
             />
           }
         />

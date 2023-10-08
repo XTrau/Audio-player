@@ -3,10 +3,10 @@ import React from 'react'
 import Header from '../Header/Header'
 import TrackController from "../TrackController/TrackController";
 
-function Layout({children, trackControllerProps}) {
+function Layout({children, trackControllerProps, headerProps}) {
   return (
     <>
-      <Header/>
+      <Header headerProps={headerProps}/>
 
 
       <main>

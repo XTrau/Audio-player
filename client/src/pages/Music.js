@@ -1,16 +1,18 @@
 import React from 'react'
 import Track from '../components/Track/Track'
+import favorite from "./Favorite";
 
 function Music({
-  trackList,
-  search,
-  selectTrack,
-  playTrack,
-  pauseTrack,
-  audioRef,
-  currentTrack,
-  paused
-}) {
+                 trackList,
+                 favoriteList,
+                 search,
+                 selectTrack,
+                 playTrack,
+                 pauseTrack,
+                 audioRef,
+                 addToFavorite,
+                 removeFromFavorite
+               }) {
   return (
     <>
       <h1>Музыка</h1>
@@ -26,6 +28,7 @@ function Music({
               )
                 return true
             }
+            return false
           })
           .map((track, index) => (
             <Track
@@ -33,10 +36,12 @@ function Music({
               track={track}
               audioRef={audioRef}
               selectTrack={selectTrack}
+              currentList={trackList}
               playTrack={playTrack}
               pauseTrack={pauseTrack}
-              currentTrack={currentTrack}
-              paused={paused}
+              addToFavorite={addToFavorite}
+              removeFromFavorite={removeFromFavorite}
+              liked={favoriteList.includes(track)}
             />
           ))}
       </ul>
