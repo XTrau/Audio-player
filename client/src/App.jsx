@@ -5,7 +5,8 @@ import Layout from './components/Layout/Layout'
 
 import Music from './pages/Music'
 import Favorite from './pages/Favorite'
-import About from './pages/About'
+import AddAuthor from './pages/AddAuthor'
+import AddMusic from "./pages/AddMusic";
 
 import {useDispatch, useSelector} from "react-redux";
 
@@ -43,8 +44,8 @@ function App() {
   const audioRef = useRef()
 
   useEffect(() => {
-    axios.get('/').then(data => console.log(data.data))
-    dispatch({type: 'CHANGE_TRACK', payload: trackList[0]})
+    //axios.get('/').then(data => console.log(data.data))
+    selectTrack(trackList[0], trackList)
   }, [])
 
   function playTrack() {
@@ -73,8 +74,6 @@ function App() {
     dispatch({type: 'CHANGE_TRACK', payload: track})
     setNextTracks(newNextList)
     setPrevTracks(newPrevList)
-
-    setTimeout(() => playTrack(), 0)
   }
 
   function toPrevTrack() {
@@ -166,7 +165,8 @@ function App() {
             />
           }
         />
-        <Route path='/about' element={<About/>}/>
+        <Route path='/add_author' element={<AddAuthor/>}/>
+        <Route path='/add_track' element={<AddMusic/>}/>
       </Routes>
     </Layout>
   )
