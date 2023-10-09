@@ -40,8 +40,8 @@ app.post('/add_author', (req, res) => {
   const image = req.files.image
   const fileName = Date.now() + '_' + image.name
   const authorName = req.body.name
-  const filePath = `./client/public/authors/${authorName}/${fileName}`
-  fs.mkdir(`./client/public/authors/${authorName}`, () => {})
+  const filePath = `../client/public/authors/${authorName}/${fileName}`
+  fs.mkdir(`../client/public/authors/${authorName}`, () => {})
   image.mv(filePath)
 
   const path = `authors/${authorName}/${fileName}`
