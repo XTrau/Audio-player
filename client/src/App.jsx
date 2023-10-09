@@ -9,6 +9,8 @@ import About from './pages/About'
 
 import {useDispatch, useSelector} from "react-redux";
 
+import axios from './axios'
+
 function App() {
   const [trackList, setTrackList] = useState([{
     id: 0,
@@ -41,6 +43,7 @@ function App() {
   const audioRef = useRef()
 
   useEffect(() => {
+    axios.get('/').then(data => console.log(data.data))
     dispatch({type: 'CHANGE_TRACK', payload: trackList[0]})
   }, [])
 
