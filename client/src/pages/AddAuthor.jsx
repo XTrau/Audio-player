@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from "../axios";
-import './input.scss'
+import './addPages.scss'
 
 function AddAuthor() {
   const [authorName, setAuthorName] = useState('')
@@ -29,7 +29,8 @@ function AddAuthor() {
     <>
       <h1>Add Author</h1>
       <form action="">
-        <input type="text" placeholder="Name" value={authorName} onChange={e => setAuthorName(e.target.value)}/>
+        <input type="text" className='text-input' placeholder="Name" value={authorName}
+               onChange={e => setAuthorName(e.target.value)}/>
         <input type="file" accept="image/png, image/jpeg, image/jpg"
                onChange={e => setAuthorImage(e.target.files[0])}/>
         <button onClick={uploadAuthor}>Submit</button>

@@ -1,0 +1,140 @@
+form {
+  .text-input {
+    width: 100%;
+    padding: 13px;
+    border-radius: .3rem;
+    font-size: 1rem;
+  }
+
+  input {
+    margin: 1rem 0;
+  }
+
+  .overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.42);
+  }
+
+  h3 {
+    margin-top: 1.5rem;
+  }
+
+  button {
+    width: 100%;
+    color: white;
+    background: linear-gradient(135deg, #7a7af5, #00a4be);
+    padding: 15px 0;
+    border-radius: 1rem;
+    font-size: 1rem;
+    font-weight: bold;  
+
+    &:hover {
+      background: linear-gradient(135deg, #6b6bea, #06b8d7);
+    }
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .find-author {
+    position: relative;
+    text-align: center;
+    margin-bottom: 1rem;
+
+    input {
+      position: relative;
+      z-index: 2;
+    }
+
+    .search-result {
+      z-index: 2;
+      position: absolute;
+      width: 100%;
+      height: min-content;
+      border-radius: .5rem;
+      overflow: hidden;
+
+      .search-item {
+        display: flex;
+        align-items: center;
+        background: white;
+        padding: .2rem;
+
+        img {
+          height: 70px;
+          width: 70px;
+          border-radius: .5rem;
+          object-fit: cover;
+        }
+
+        p {
+          font-weight: 500;
+          margin-left: .5rem;
+        }
+
+        &:hover {
+          background: #c2c2c2;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .selected-author {
+    position: relative;
+    overflow: hidden;
+    border-radius: .5rem;
+    margin: 10px 0;
+    background: white;
+    display: flex;
+
+    .delete-btn {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: min-content;
+      width: 1.5rem;
+      border-radius: 0 10px 0 10px;
+      background: #d20000;
+      padding: .2rem;
+
+      &:hover {
+        background: #ff0000;
+      }
+    }
+
+    img {
+      width: 75px;
+      height: 75px;
+      object-fit: cover;
+    }
+
+    h3 {
+      margin-left: 30px;
+    }
+  }
+
+  .checkboxes {
+    font-weight: 900;
+    display: flex;
+
+    .checkbox {
+      margin: 10px;
+      display: flex;
+      align-items: center;
+
+      input[type='checkbox'] {
+        margin: 0 5px;
+        width: 15px;
+        height: 15px;
+      }
+
+    }
+  }
+}
