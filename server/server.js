@@ -2,7 +2,6 @@ const express = require('express')
 
 const fileUpload = require('express-fileupload')
 const cors = require('cors')
-const fs = require('fs')
 const {openDb, addAuthor, addAlbum, addTrack} = require("./models/db");
 
 require('dotenv').config()

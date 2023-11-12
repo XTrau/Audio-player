@@ -1,7 +1,6 @@
 const {open} = require("sqlite");
 const sqlite3 = require("sqlite3");
 const fs = require("fs");
-const {add} = require("nodemon/lib/rules");
 
 async function openDb() {
   return open({

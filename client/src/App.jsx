@@ -27,7 +27,7 @@ function App() {
 
   useEffect(() => {
     axios.get('/tracks').then(data => {
-      setTrackList(prev => [...data.data])
+      shuffleTracks(data.data)
       selectTrack(data.data[0], data.data)
     })
   }, [])
@@ -58,6 +58,17 @@ function App() {
     dispatch({type: 'CHANGE_TRACK', payload: track})
     setNextTracks(newNextList)
     setPrevTracks(newPrevList)
+  }
+
+  function shuffleTracks(array) {
+    let currentIndex = array.length,  randomIndex
+    while (currentIndex > 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex--;
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]]
+    }
+    setTrackList(array)
   }
 
   function toPrevTrack() {
@@ -107,7 +118,7 @@ function App() {
   }
 
   const addToFavorite = (track) => {
-    setFavoriteList(prev => [...prev, track])
+    setFavoriteList(prev => [track, ...prev])
   }
 
   const removeFromFavorite = (track) => {
