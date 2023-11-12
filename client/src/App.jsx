@@ -13,25 +13,7 @@ import {useDispatch, useSelector} from "react-redux";
 import axios from './axios'
 
 function App() {
-  const [trackList, setTrackList] = useState([{
-    id: 0,
-    title: 'Stan',
-    authors: 'Eminem, Dido',
-    image: '/authors/Eminem/Curtain Call The Hits/Curtain_Call_The_Hits.jpg',
-    audio: '/authors/Eminem/Curtain Call The Hits/Eminem_Dido_-_Stan.mp3'
-  }, {
-    id: 1,
-    title: 'Mockingbird',
-    authors: 'Eminem',
-    image: '/authors/Eminem/Curtain Call The Hits/Curtain_Call_The_Hits.jpg',
-    audio: '/authors/Eminem/Curtain Call The Hits/Eminem_-_Mockingbird.mp3'
-  }, {
-    id: 2,
-    title: 'The Real Slim Shady',
-    authors: 'Eminem',
-    image: '/authors/Eminem/Curtain Call The Hits/Curtain_Call_The_Hits.jpg',
-    audio: '/authors/Eminem/Curtain Call The Hits/Eminem_-_The_Real_Slim_Shady.mp3'
-  }])
+  const [trackList, setTrackList] = useState([])
   const [favoriteList, setFavoriteList] = useState([])
 
   const [nextTracks, setNextTracks] = useState([])
@@ -44,8 +26,10 @@ function App() {
   const audioRef = useRef()
 
   useEffect(() => {
-    //axios.get('/').then(data => console.log(data.data))
-    selectTrack(trackList[0], trackList)
+    axios.get('/tracks').then(data => {
+      setTrackList(prev => [...data.data])
+      selectTrack(data.data[0], data.data)
+    })
   }, [])
 
   function playTrack() {

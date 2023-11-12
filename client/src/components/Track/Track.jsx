@@ -42,7 +42,7 @@ function Track({
       <div className='track-info'>
         <div className='title'>
           <span>{track.title}</span>
-          <b>{track.authors}</b>
+          <b>{track.authorName}</b>
         </div>
       </div>
       <button className='like-btn' onClick={liked ? () => removeFromFavorite(track) : () => addToFavorite(track)}>

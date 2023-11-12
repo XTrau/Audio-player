@@ -86,7 +86,7 @@ function TrackController({
         <img src={currentTrack.image} alt='' width={70} height={70}/>
         <div className='track-description'>
           <h2>{currentTrack.title}</h2>
-          <b>{currentTrack.authors}</b>
+          <b>{currentTrack.authorName}</b>
         </div>
       </div>
 

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom'
 import axios from "../axios";
-import './addPages.scss'
-
+import FormTextInput from "../components/FormInput/FormTextInput";
+import FormFileInput from "../components/FormInput/FormFileInput";
 
 function AddMusic() {
   const [authorSearch, setAuthorSearch] = useState('')
@@ -21,7 +21,7 @@ function AddMusic() {
         setAuthors(data.data)
       })
       .catch(err => console.log(err));
-  }, [authorSearch])
+  }, [authorSearch, inputFocused])
 
   const sendAlbum = async () => {
     const fd = FormData()
@@ -37,9 +37,16 @@ function AddMusic() {
     )
   }
 
-  const sendTrack = async (e) => {
-    e.preventDefault()
+  const clearFields = () => {
+    setSelectedAuthor(null)
+    setAlbumTitle('')
+    setTrackTitle('')
+    setAlbumImage(undefined)
+    setTrackImage(undefined)
+    setTrackAudio(undefined)
+  }
 
+  const sendTrack = async () => {
     if (!albumTitle || !selectedAuthor || !albumImage || !trackTitle || !trackImage || !trackAudio) {
       alert("Заполните все поля")
       return
@@ -53,12 +60,14 @@ function AddMusic() {
     fd.append('trackImage', trackImage)
     fd.append('trackFile', trackAudio)
 
-    axios.post('/add_track', fd).then(() => {
+    await axios.post('/add_track', fd).then((res) => {
       console.log('Track Added')
+      console.log(res)
     }).catch((err) => {
         console.log(err)
       }
     )
+    clearFields()
   }
 
   const focusOn = () => {
@@ -95,13 +104,13 @@ function AddMusic() {
                  autoFocus={inputFocused}
                  value={authorSearch}
                  onChange={(e) => setAuthorSearch(e.target.value)}
-                 placeholder="Name"/>
+                 placeholder="Nickname"/>
 
           <div className={`search-result ${inputFocused ? '' : 'hidden'}`}>
             {authors.length > 0 ? (
               authors.filter(author => author.name.toLowerCase().includes(authorSearch.toLowerCase())).map((author, index) => (
                 <div key={index} className='search-item' onClick={() => selectAuthor(author)}>
-                  <img src={author.image} alt=""/>
+                  <img src={author.image} className="author-image" alt=""/>
                   <p>{author.name}</p>
                 </div>
               ))
@@ -109,14 +118,16 @@ function AddMusic() {
           </div>
         </div>
 
-        {selectedAuthor !== null ? (
-            <div className='selected-author'>
-              <button className='delete-btn' onClick={unselectAuthor}>x</button>
-              <img src={selectedAuthor.image} alt=""/>
-              <h3>{selectedAuthor.name}</h3>
-            </div>)
-          :
-          (<></>)}
+        {
+          selectedAuthor !== null ? (
+              <div className='selected-author'>
+                <button className='delete-btn' onClick={unselectAuthor}>x</button>
+                <img src={selectedAuthor.image} alt=""/>
+                <h3>{selectedAuthor.name}</h3>
+              </div>)
+            :
+            (<></>)
+        }
 
         <div className='checkboxes'>
           <div className="checkbox">
@@ -125,26 +136,19 @@ function AddMusic() {
           </div>
         </div>
 
-        <input type="text" value={albumTitle} className='text-input' onChange={e => setAlbumTitle(e.target.value)}
-               placeholder="Album title"/>
-        <div>
-          <h3>Album image</h3>
-          <input type="file" accept='image/png, image/jpeg, image/jpg'
-                 onChange={e => setAlbumImage(e.target.files[0])}/>
-        </div>
-
-        <input type="text" className='text-input' value={trackTitle} onChange={e => setTrackTitle(e.target.value)}
-               placeholder='Music title'/>
-        <div>
-          <h3>Music image</h3>
-          <input type="file" onChange={e => setTrackImage(e.target.files[0])}
-                 accept='image/png, image/jpeg, image/jpg'/>
-          <h3>Music file</h3>
-          <input type="file" onChange={e => setTrackAudio(e.target.files[0])} accept='audio/mp3'/>
-        </div>
-
-        <button onClick={sendTrack}>Submit</button>
+        <FormTextInput title="Album title" value={albumTitle} setValue={setAlbumTitle} placeholder=""/>
+        <FormFileInput title="Album image" accept='image/png, image/jpeg, image/jpg' setValue={setAlbumImage}/>
+        <FormTextInput title="Track title" value={trackTitle} setValue={setTrackTitle} placeholder=""/>
+        <FormFileInput title="Music image" accept='image/png, image/jpeg, image/jpg' setValue={setTrackImage}/>
+        <FormFileInput title="Music file" accept='audio/mp3' setValue={setTrackAudio}/>
       </form>
+
+      <button className='submit-btn' onClick={async (e) => {
+        e.preventDefault()
+        await sendTrack()
+      }}>Submit
+      </button>
+
       <p>There is no author? <Link to='/add_author' style={{color: "blue"}}>Add Author</Link></p>
     </>
   );

@@ -46,8 +46,9 @@ main {
   display: flex;
   justify-content: center;
   width: 100%;
+
   .wrapper {
-    margin-top: 100px;
+    margin-top: 90px;
     padding: 20px;
     border-radius: 10px;
     height: 100%;
@@ -109,6 +110,7 @@ main {
   &:hover {
     border: none;
     outline: none;
+
     span {
       &.play-img {
         border-left: 20px solid rgb(255, 255, 255);
@@ -175,6 +177,107 @@ main {
       transform: translateY(50%);
     }
   }
+}
+
+.submit-btn {
+  width: 100%;
+  color: white;
+  background: linear-gradient(135deg, #7a7af5, #00a4be);
+  padding: 15px 0;
+  border-radius: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+
+  &:hover {
+    background: linear-gradient(135deg, #7a7af5, #00a4be);
+  }
+}
+
+.author-image {
+  height: 70px;
+  width: 70px;
+  border-radius: .5rem;
+  object-fit: cover;
+}
+
+form {
+  .find-author {
+    position: relative;
+    text-align: center;
+    margin-bottom: 1rem;
+
+    .search-result {
+      z-index: 2;
+      position: absolute;
+      width: 100%;
+      height: min-content;
+      border-radius: .5rem;
+      overflow: hidden;
+
+      .search-item {
+        display: flex;
+        align-items: center;
+        background: white;
+        padding: .2rem;
+
+
+        p {
+          font-weight: 500;
+          margin-left: .5rem;
+        }
+
+        &:hover {
+          background: #c2c2c2;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .selected-author {
+    position: relative;
+    overflow: hidden;
+    border-radius: .5rem;
+    margin: 10px 0;
+    background: white;
+    display: flex;
+
+    .delete-btn {
+      color: white;
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: min-content;
+      width: 1.5rem;
+      border-radius: 0 10px 0 10px;
+      background: #d20000;
+      padding: .2rem;
+
+      &:hover {
+        background: #ff0000;
+      }
+    }
+
+    img {
+      width: 75px;
+      height: 75px;
+      object-fit: cover;
+    }
+  }
+}
+
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.42);
+}
+
+.hidden {
+  display: none;
 }
 
 footer {
