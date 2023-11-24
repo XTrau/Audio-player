@@ -1,3 +1,4 @@
+import React from 'react'
 import {useEffect, useRef, useState} from 'react'
 import {Routes, Route} from 'react-router-dom'
 
@@ -16,8 +17,8 @@ function App() {
   const [trackList, setTrackList] = useState([])
   const [favoriteList, setFavoriteList] = useState([])
 
-  const [nextTracks, setNextTracks] = useState([])
-  const [prevTracks, setPrevTracks] = useState([])
+  const [currentList, setCurrentList] = useState([])
+  const [trackIndex, setTrackIndex] = useState(0)
 
   const currentTrack = useSelector(store => store.currentTrack)
   const dispatch = useDispatch()
@@ -26,42 +27,41 @@ function App() {
   const audioRef = useRef()
 
   useEffect(() => {
-    axios.get('/tracks').then(data => {
+    axios.get('/api/track').then(data => {
       shuffleTracks(data.data)
-      selectTrack(data.data[0], data.data)
+      selectTrack(0, data.data)
     })
   }, [])
 
-  function playTrack() {
+  useEffect(() => {
+    updateTrack()
+  }, [currentList, trackIndex])
+
+  async function playTrack() {
     dispatch({type: 'PLAY_TRACK'})
-    audioRef.current.play()
+    if (audioRef.current.play !== undefined)
+      await audioRef.current.play()
   }
 
-  function pauseTrack() {
+  async function pauseTrack() {
     dispatch({type: 'PAUSE_TRACK'})
-    audioRef.current.pause()
+
+    if (audioRef.current.pause !== undefined)
+      await audioRef.current.pause()
   }
 
-  function selectTrack(track, list) {
-    const newNextList = []
-    const newPrevList = []
-    let center = false
-    for (const el of list) {
-      if (el === track)
-        center = true
-      else if (!center)
-        newPrevList.push(el)
-      else
-        newNextList.push(el)
-    }
+  const updateTrack = () => {
+    dispatch({type: 'CHANGE_TRACK', payload: currentList[trackIndex]})
+  }
 
-    dispatch({type: 'CHANGE_TRACK', payload: track})
-    setNextTracks(newNextList)
-    setPrevTracks(newPrevList)
+  function selectTrack(index, list) {
+    setCurrentList(list)
+    setTrackIndex(index)
+    dispatch({type: 'CHANGE_TRACK', payload: currentList[trackIndex]})
   }
 
   function shuffleTracks(array) {
-    let currentIndex = array.length,  randomIndex
+    let currentIndex = array.length, randomIndex
     while (currentIndex > 0) {
       randomIndex = Math.floor(Math.random() * currentIndex)
       currentIndex--;
@@ -72,49 +72,27 @@ function App() {
   }
 
   function toPrevTrack() {
-    if (prevTracks.length === 0) {
-      const newPrevList = [currentTrack, ...nextTracks]
-      newPrevList.pop()
-      setPrevTracks(newPrevList)
-      dispatch({type: 'CHANGE_TRACK', payload: nextTracks[nextTracks.length - 1]})
-      setNextTracks([])
-
-      setTimeout(() => playTrack(), 0)
-      return
-    }
-
-    const newPrevList = [...prevTracks]
-    const newNextList = [currentTrack, ...nextTracks]
-    dispatch({type: 'CHANGE_TRACK', payload: prevTracks[prevTracks.length - 1]})
-    newPrevList.pop()
-
-    setPrevTracks(newPrevList)
-    setNextTracks(newNextList)
-
-    setTimeout(() => playTrack(), 0)
+    setTrackIndex(prev => {
+      prev--
+      if (prev < 0)
+        return trackList.length - 1
+      return prev
+    })
+    setTimeout(() => {
+      playTrack()
+    }, 10)
   }
 
   function toNextTrack() {
-    if (nextTracks.length === 0) {
-      const newNextList = [...prevTracks, currentTrack]
-      newNextList.shift()
-      setNextTracks(newNextList)
-      dispatch({type: 'CHANGE_TRACK', payload: prevTracks[0]})
-      setPrevTracks([])
-
-      setTimeout(() => playTrack(), 0)
-      return
-    }
-
-    const newPrevList = [...prevTracks, currentTrack]
-    const newNextList = [...nextTracks]
-    dispatch({type: 'CHANGE_TRACK', payload: nextTracks[0]})
-    newNextList.shift()
-
-    setPrevTracks(newPrevList)
-    setNextTracks(newNextList)
-
-    setTimeout(() => playTrack(), 0)
+    setTrackIndex(prev => {
+      prev++
+      if (prev >= currentList.length)
+        return 0
+      return prev
+    })
+    setTimeout(() => {
+      playTrack()
+    }, 10)
   }
 
   const addToFavorite = (track) => {

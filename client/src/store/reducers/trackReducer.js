@@ -2,7 +2,7 @@ const initialState = {
   id: -1,
   title:
     'Loading...',
-  authors:
+  authorName:
     'Loading...',
   image:
     '',

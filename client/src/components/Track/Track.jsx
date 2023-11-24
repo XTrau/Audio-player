@@ -4,6 +4,7 @@ import {useSelector} from "react-redux";
 
 function Track({
                  track,
+                 index,
                  selectTrack,
                  currentList,
                  playTrack,
@@ -19,7 +20,7 @@ function Track({
   )
 
   function onClickPlay() {
-    selectTrack(track, currentList)
+    selectTrack(index, currentList)
     setTimeout(() => playTrack(), 0)
   }
 

@@ -1,6 +1,5 @@
 import React from 'react'
 import Track from '../components/Track/Track'
-import favorite from "./Favorite";
 
 function Music({
                  trackList,
@@ -15,16 +14,16 @@ function Music({
                }) {
   return (
     <>
-      <h1>Музыка</h1>
-      <ul className='track-list'>
+      <h1 className="mx-5">Музыка</h1>
+      <ul className='d-flex flex-column'>
         {trackList
           .filter(track => {
             const filterList = search.trim().split(' ')
             for (const text of filterList) {
               const lowerText = text.toLowerCase()
               if (
-                track.title.toLowerCase().includes(lowerText) ||
-                track.authors.toLowerCase().includes(lowerText)
+                track.title?.toLowerCase().includes(lowerText) ||
+                track.authors?.toLowerCase().includes(lowerText)
               )
                 return true
             }
@@ -33,6 +32,7 @@ function Music({
           .map((track, index) => (
             <Track
               key={index}
+              index={index}
               track={track}
               audioRef={audioRef}
               selectTrack={selectTrack}

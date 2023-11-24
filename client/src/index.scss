@@ -1,5 +1,7 @@
+@import '~bootstrap/scss/bootstrap';
+
 * {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Roboto', 'DM Sans', sans-serif;
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -205,10 +207,12 @@ form {
     position: relative;
     text-align: center;
     margin-bottom: 1rem;
+    z-index: 2;
 
     .search-result {
       z-index: 2;
       position: absolute;
+      top: 105%;
       width: 100%;
       height: min-content;
       border-radius: .5rem;
@@ -283,3 +287,52 @@ form {
 footer {
   height: 300px;
 }
+
+.r-0 {
+  right: 0;
+}
+
+.r-1 {
+   right: 1px;
+}
+
+.r-2 {
+  right: 2px;
+}
+
+.r-3 {
+  right: 3px;
+}
+
+.r-4 {
+  right: 4px;
+}
+
+.r-5 {
+  right: 5px;
+}
+
+.t-0 {
+  top: 0;
+}
+
+.t-1 {
+  top: 1px;
+}
+
+.t-2 {
+  top: 2px;
+}
+
+.t-3 {
+  top: 3px;
+}
+
+.t-4 {
+  top: 4px;
+}
+
+.t-5 {
+  top: 5px;
+}
+
