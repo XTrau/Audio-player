@@ -6,7 +6,7 @@ class AlbumController {
       const album = await albumService.create(req.body, req.files.image)
       res.json(album)
     } catch (e) {
-      res.status(500).json(e)
+      res.status(500).json(e.message)
     }
   }
 

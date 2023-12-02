@@ -28,20 +28,17 @@ li {
   list-style: none;
 }
 
-body {
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
+::-webkit-scrollbar {
+  width: 8px;
+}
 
-  &::-webkit-scrollbar-track {
-    background: inherit;
-  }
+::-webkit-scrollbar-track {
+  background: inherit;
+}
 
-  &::-webkit-scrollbar-thumb {
-    background-color: gray;
-    border-radius: 5px;
-    border: none;
-  }
+::-webkit-scrollbar-thumb {
+  background-color: gray;
+  border: none;
 }
 
 main {
@@ -271,13 +268,7 @@ form {
 }
 
 .overlay {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  background: rgba(0, 0, 0, 0.42);
+  z-index: 4;
 }
 
 .hidden {
@@ -293,7 +284,7 @@ footer {
 }
 
 .r-1 {
-   right: 1px;
+  right: 1px;
 }
 
 .r-2 {
@@ -335,4 +326,49 @@ footer {
 .t-5 {
   top: 5px;
 }
+
+.l-0 {
+  left: 0;
+}
+
+.artist-search-result {
+  max-height: 300px;
+  z-index: 5;
+  top: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
+
+  li {
+    display: flex;
+    align-items: center;
+    transition: .1s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      background: gray;
+    }
+  }
+
+  .artist-search-result__image {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+.z-4 {
+  z-index: 4;
+}
+
+.z-5 {
+  z-index: 5;
+}
+
+.delete-artist {
+  color: white;
+  border-radius: .5rem 0 .5rem 0;
+  margin-right: .5rem;
+  overflow: hidden;
+  background: linear-gradient(135deg, #454c54, #19194d);
+}
+
 

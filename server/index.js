@@ -1,5 +1,5 @@
 const express = require('express')
-const authorRouter = require('./routes/author.routes')
+const authorRouter = require('./routes/artist.routes')
 const albumRouter = require('./routes/album.routes')
 const trackRouter = require('./routes/track.routes')
 

@@ -3,12 +3,16 @@ const fileService = require('../file.service')
 
 class AlbumService {
   async create(album, image) {
-    const authors = JSON.parse(album.authors)
-    if (!album.name || !authors || !image) throw Error('Заполнены не все поля')
+    if (!album.name || !album.artists || !image) throw Error('Заполнены не все поля')
     const image_url = fileService.uploadImage(image)
     const newAlbum = await db.query('INSERT INTO album (name, image_url) VALUES ($1, $2) RETURNING *', [album.name, image_url])
-    for (const id of authors)
-      await db.query('INSERT INTO author_album (author_id, album_id) VALUES ($1, $2)', [id, newAlbum.rows[0].id])
+
+    const artists = JSON.parse(album.artists)
+
+    console.log(artists)
+    for (const artist of artists)
+      await db.query('INSERT INTO artist_album (artist_id, album_id) VALUES ($1, $2)', [artist.id, newAlbum.rows[0].id])
+
     return newAlbum.rows[0]
   }
 
@@ -23,26 +27,26 @@ class AlbumService {
                       'name', track.name,
                       'image_url', track.image_url,
                       'audio_url', track.audio_url,
-                      'authors', (SELECT jsonb_agg(json_build_object(
-                              'id', author.id,
-                              'image_url', author.image_url,
-                              'name', author.name
+                      'artists', (SELECT jsonb_agg(json_build_object(
+                              'id', artist.id,
+                              'image_url', artist.image_url,
+                              'name', artist.name
                                                    ))
-                                  FROM author
-                                           JOIN author_track
-                                                ON track.id = author_track.track_id
-                                  WHERE author.id = author_track.author_id)
+                                  FROM artist
+                                           JOIN artist_track
+                                                ON track.id = artist_track.track_id
+                                  WHERE artist.id = artist_track.artist_id)
                                                   ))
                                  FROM track
                                  WHERE track.album_id = album.id),
-                      'authors', (SELECT jsonb_agg(json_build_object(
-                      'id', author.id,
-                      'name', author.name,
-                      'image_url', author.image_url
+                      'artists', (SELECT jsonb_agg(json_build_object(
+                      'id', artist.id,
+                      'name', artist.name,
+                      'image_url', artist.image_url
                                                    ))
-                                  FROM author
-                                           JOIN author_album ON author.id = author_album.author_id
-                                  WHERE album.id = author_album.album_id)
+                                  FROM artist
+                                           JOIN artist_album ON artist.id = artist_album.artist_id
+                                  WHERE album.id = artist_album.album_id)
               ) AS album
        FROM album;`
     )
@@ -60,26 +64,26 @@ class AlbumService {
                       'name', track.name,
                       'image_url', track.image_url,
                       'audio_url', track.audio_url,
-                      'authors', (SELECT jsonb_agg(json_build_object(
-                              'id', author.id,
-                              'image_url', author.image_url,
-                              'name', author.name
+                      'artists', (SELECT jsonb_agg(json_build_object(
+                              'id', artist.id,
+                              'image_url', artist.image_url,
+                              'name', artist.name
                                                    ))
-                                  FROM author
-                                           JOIN author_track
-                                                ON track.id = author_track.track_id
-                                  WHERE author.id = author_track.author_id)
+                                  FROM artist
+                                           JOIN artist_track
+                                                ON track.id = artist_track.track_id
+                                  WHERE artist.id = artist_track.artist_id)
                                                   ))
                                  FROM track
                                  WHERE track.album_id = album.id),
-                      'authors', (SELECT jsonb_agg(json_build_object(
-                      'id', author.id,
-                      'name', author.name,
-                      'image_url', author.image_url
+                      'artists', (SELECT jsonb_agg(json_build_object(
+                      'id', artist.id,
+                      'name', artist.name,
+                      'image_url', artist.image_url
                                                    ))
-                                  FROM author
-                                           JOIN author_album ON author.id = author_album.author_id
-                                  WHERE album.id = author_album.album_id)
+                                  FROM artist
+                                           JOIN artist_album ON artist.id = artist_album.artist_id
+                                  WHERE album.id = artist_album.album_id)
               ) AS album
        FROM album
        WHERE album.id = $1;`, [id])
@@ -106,7 +110,7 @@ class AlbumService {
 
   async delete(id) {
     if (!id) throw new Error('Не указан ID')
-    await db.query('DELETE FROM author_album WHERE album_id = $1', [id])
+    await db.query('DELETE FROM artist_album WHERE album_id = $1', [id])
     const album = await db.query('DELETE FROM album WHERE id = $1 RETURNING *', [id])
     fileService.removeFile(album.rows[0].image_url)
     return album.rows[0]

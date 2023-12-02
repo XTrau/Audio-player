@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 import axios from "../axios";
-import FormTextInput from "../components/FormInput/FormTextInput";
-import FormFileInput from "../components/FormInput/FormFileInput";
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 
@@ -21,8 +19,9 @@ function AddAuthor() {
     fd.append('image', authorImageFile)
     fd.append('name', authorName.trim())
 
-    axios.post('/api/author', fd)
-      .then(() => {
+    axios.post('/api/artist', fd)
+      .then((res) => {
+        console.log(res)
         alert('Added')
       })
       .catch((err) => {
@@ -39,6 +38,7 @@ function AddAuthor() {
     setAuthorImageFile(e.target.files[0])
     if (e.target.files[0])
       setAuthorImage(URL.createObjectURL(e.target.files[0]))
+
   }
 
   return (

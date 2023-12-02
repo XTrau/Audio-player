@@ -1,9 +1,9 @@
-const authorService = require('../services/author.service')
+const artistService = require('../services/artist.service')
 
-class AuthorController {
+class ArtistController {
   async create(req, res) {
     try {
-      const author = await authorService.create(req.body, req.files.image)
+      const author = await artistService.create(req.body, req.files.image)
       res.json(author)
     } catch (e) {
       res.status(500).json(e)
@@ -12,7 +12,7 @@ class AuthorController {
 
   async getAll(req, res) {
     try {
-      const authors = await authorService.getAll()
+      const authors = await artistService.getAll()
       res.json(authors)
     } catch (e) {
       res.status(500).json(e)
@@ -22,7 +22,7 @@ class AuthorController {
 
   async getOne(req, res) {
     try {
-      const author = await authorService.getOne(req.params.id)
+      const author = await artistService.getOne(req.params.id)
       res.json(author)
     } catch (e) {
       res.status(500).json(e)
@@ -31,7 +31,7 @@ class AuthorController {
 
   async update(req, res) {
     try {
-      const updatedAuthor = await authorService.update(req.body, req.files?.image)
+      const updatedAuthor = await artistService.update(req.body, req.files?.image)
       res.json(updatedAuthor)
     } catch (e) {
       res.status(500).json(e)
@@ -40,7 +40,7 @@ class AuthorController {
 
   async delete(req, res) {
     try {
-      const author = await authorService.delete(req.params.id)
+      const author = await artistService.delete(req.params.id)
       res.json(author)
     } catch (e) {
       res.status(500).json(e)
@@ -48,4 +48,4 @@ class AuthorController {
   }
 }
 
-module.exports = new AuthorController()
+module.exports = new ArtistController()

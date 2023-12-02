@@ -15,33 +15,20 @@ function Favorite({
     <>
       <h1>Избранное</h1>
       <ul className='track-list'>
-        {favoriteList
-          .filter(track => {
-            const filterList = search.trim().split(' ')
-            for (const text of filterList) {
-              const lowerText = text.toLowerCase()
-              if (
-                track.title.toLowerCase().includes(lowerText) ||
-                track.authors.toLowerCase().includes(lowerText)
-              )
-                return true
-            }
-            return false
-          })
-          .map((track, index) => (
-            <Track
-              key={index}
-              track={track}
-              audioRef={audioRef}
-              selectTrack={selectTrack}
-              currentList={favoriteList}
-              playTrack={playTrack}
-              pauseTrack={pauseTrack}
-              addToFavorite={addToFavorite}
-              removeFromFavorite={removeFromFavorite}
-              liked={favoriteList.includes(track)}
-            />
-          ))}
+        {favoriteList?.map((track, index) => (
+          <Track
+            key={index}
+            track={{...track}}
+            audioRef={audioRef}
+            selectTrack={selectTrack}
+            currentList={favoriteList}
+            playTrack={playTrack}
+            pauseTrack={pauseTrack}
+            addToFavorite={addToFavorite}
+            removeFromFavorite={removeFromFavorite}
+            liked={favoriteList.includes(track)}
+          />
+        ))}
       </ul>
 
       <div className='wrapper-bottom'>

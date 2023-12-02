@@ -15,8 +15,8 @@ function Track({
                }) {
   const currentTrack = useSelector(store => store.currentTrack)
   const playNow = useMemo(
-    () => track.title === currentTrack.title && currentTrack.paused === false,
-    [track.title, currentTrack.title, currentTrack.paused]
+    () => track.id === currentTrack.id && currentTrack.paused === false,
+    [track.id, currentTrack.id, currentTrack.paused]
   )
 
   function onClickPlay() {
@@ -29,21 +29,20 @@ function Track({
   }
 
   return (
-    <li className={playNow ? 'play' : ''}>
-      <audio
-        src={track.audio}
-      ></audio>
+    <li className={(playNow ? 'play' : '') + ' track-wrapper'}>
       <button
         className='play-btn'
         onClick={playNow ? onClickPause : onClickPlay}
       >
         <span className={playNow ? 'pause-img' : 'play-img'}></span>
       </button>
-      <img src={`${track.image}`} alt='preview' width={50}/>
+      <img src={`http://localhost:5000/${track.image_url}`} alt='preview' height={50}/>
       <div className='track-info'>
         <div className='title'>
-          <span>{track.title}</span>
-          <b>{track.authorName}</b>
+          <span>{track.name}</span>
+          <b>{track.artists?.reduce((acc, artist) =>
+              acc + artist.name + ' '
+            , '')}</b>
         </div>
       </div>
       <button className='like-btn' onClick={liked ? () => removeFromFavorite(track) : () => addToFavorite(track)}>

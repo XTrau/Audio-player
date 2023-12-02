@@ -6,7 +6,7 @@ class TrackController {
       const track = await trackService.create(req.body, req.files)
       res.json(track)
     } catch (e) {
-      req.status(500).json(e)
+      res.status(500).json(e)
     }
   }
 

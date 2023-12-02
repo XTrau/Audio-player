@@ -60,7 +60,7 @@ function TrackController({
   return (
     <nav className='track-controller'>
       <audio
-        src={currentTrack.audio}
+        src={`http://localhost:5000/${currentTrack.audio_url}`}
         onEnded={toNextTrack}
         onLoadedMetadata={getDurationTime}
         ref={audioRef}
@@ -83,10 +83,10 @@ function TrackController({
       </div>
 
       <div className='track-info'>
-        <img src={currentTrack.image} alt='' width={70} height={70}/>
+        <img src={`http://localhost:5000/${currentTrack.image_url}`} alt='' width={70} height={70}/>
         <div className='track-description'>
-          <h2>{currentTrack.title}</h2>
-          <b>{currentTrack.authorName}</b>
+          <h2>{currentTrack.name}</h2>
+          <b>{currentTrack.artists?.reduce((acc, artist) => acc + artist.name + ', ', '')}</b>
         </div>
       </div>
 

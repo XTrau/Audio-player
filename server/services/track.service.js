@@ -3,43 +3,50 @@ const fileService = require('../file.service')
 
 class TrackService {
   async create(track, files) {
-    if (!files) throw new Error('Нету файлов трека')
+    if (!files.image || !files.audio) throw new Error('Нехватает файлов трека')
     const image_url = fileService.uploadImage(files.image)
     const audio_url = fileService.uploadAudio(files.audio)
-    const createdTrack = db.query('INSERT INTO track (name, image_url, audio_url, album_id) VALUES ($1, $2, $3, $4) RETURNING *',
+    const createdTrack = await db.query('INSERT INTO track (name, image_url, audio_url, album_id) VALUES ($1, $2, $3, $4) RETURNING *',
       [track.name, image_url, audio_url, track.album_id])
-    const authors = JSON.parse(track.authors)
-    for (let i in authors)
-      await db.query(`INSERT INTO author_track (author_id, track_id)
-                      VALUES ($1, $2)`, [authors[i], createdTrack.rows[0].id])
+
+    const artists = JSON.parse(track.artists)
+    console.log(artists)
+    console.log(createdTrack.rows[0])
+
+    for (const artist of artists) {
+      await db.query(`INSERT INTO artist_track (artist_id, track_id)
+                      VALUES ($1, $2)`, [artist.id, createdTrack.rows[0].id])
+    }
+
     return createdTrack.rows[0]
   }
 
-  async getAll(req, res) {
+  async getAll() {
     const tracks = await db.query(
-      `SELECT jsonb_build_object(
-                      'id', track.id,
-                      'name', track.name,
-                      'image_url', track.image_url,
-                      'audio_url', track.audio_url,
-                          'album', (SELECT json_agg(json_build_object(
+      `SELECT jsonb_agg(jsonb_build_object(
+              'id', track.id,
+              'name', track.name,
+              'image_url', track.image_url,
+              'audio_url', track.audio_url,
+              'album',
+              (SELECT json_agg(json_build_object(
                       'id', album.id,
                       'name', album.name,
-                      'image_url', album.image_url
-                                                    ))
-                                    FROM album
-                                    WHERE album.id = track.album_id),
-                      'authors', (SELECT json_agg(json_build_object(
-                      'id', author.id,
-                      'name', author.name,
-                      'image_url', author.image_url
-                                                  ))
-                                  FROM author
-                                           JOIN author_track ON author.id = author_track.author_id
-                                  WHERE author_track.track_id = track.id))
+                      'image_url', album.image_url))
+               FROM album
+               WHERE album.id = track.album_id),
+              'artists',
+              (SELECT json_agg(json_build_object(
+                      'id', artist.id,
+                      'name', artist.name,
+                      'image_url', artist.image_url
+                               ))
+               FROM artist
+                        JOIN artist_track ON artist.id = artist_track.artist_id
+               WHERE artist_track.track_id = track.id))) AS list
        FROM track`
     )
-    return tracks.rows
+    return tracks.rows[0].list
   }
 
   async getOne(id) {

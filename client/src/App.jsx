@@ -7,7 +7,7 @@ import Layout from './components/Layout/Layout'
 import Music from './pages/Music'
 import Favorite from './pages/Favorite'
 import AddAuthor from './pages/AddAuthor'
-import AddMusic from "./pages/AddMusic";
+import AddAlbum from "./pages/AddAlbum";
 
 import {useDispatch, useSelector} from "react-redux";
 
@@ -28,8 +28,11 @@ function App() {
 
   useEffect(() => {
     axios.get('/api/track').then(data => {
-      shuffleTracks(data.data)
-      selectTrack(0, data.data)
+      console.log(data.data)
+      if (data.data) {
+        setTrackList(data.data)
+        selectTrack(0, data.data)
+      }
     })
   }, [])
 
@@ -139,7 +142,7 @@ function App() {
           }
         />
         <Route path='/add_author' element={<AddAuthor/>}/>
-        <Route path='/add_track' element={<AddMusic/>}/>
+        <Route path='/add_track' element={<AddAlbum/>}/>
       </Routes>
     </Layout>
   )
