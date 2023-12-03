@@ -8,8 +8,6 @@ class AlbumService {
     const newAlbum = await db.query('INSERT INTO album (name, image_url) VALUES ($1, $2) RETURNING *', [album.name, image_url])
 
     const artists = JSON.parse(album.artists)
-
-    console.log(artists)
     for (const artist of artists)
       await db.query('INSERT INTO artist_album (artist_id, album_id) VALUES ($1, $2)', [artist.id, newAlbum.rows[0].id])
 

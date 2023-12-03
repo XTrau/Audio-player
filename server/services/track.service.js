@@ -10,9 +10,6 @@ class TrackService {
       [track.name, image_url, audio_url, track.album_id])
 
     const artists = JSON.parse(track.artists)
-    console.log(artists)
-    console.log(createdTrack.rows[0])
-
     for (const artist of artists) {
       await db.query(`INSERT INTO artist_track (artist_id, track_id)
                       VALUES ($1, $2)`, [artist.id, createdTrack.rows[0].id])
