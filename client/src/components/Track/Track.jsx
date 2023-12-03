@@ -41,7 +41,7 @@ function Track({
         <div className='title'>
           <span>{track.name}</span>
           <b>{track.artists?.reduce((acc, artist) =>
-              acc + artist.name + ' '
+              acc + artist.name + ', '
             , '')}</b>
         </div>
       </div>
