@@ -19,6 +19,11 @@ function Track({
     [track.id, currentTrack.id, currentTrack.paused]
   )
 
+  const artistText = useMemo(() => {
+    const text = track.artists.reduce((acc, artist) => acc + artist.name + ', ', '')
+    return text.substring(0, text.length - 2)
+  }, [track.artists])
+
   function onClickPlay() {
     selectTrack(index, currentList)
     setTimeout(() => playTrack(), 0)
@@ -40,9 +45,7 @@ function Track({
       <div className='track-info'>
         <div className='title'>
           <span>{track.name}</span>
-          <b>{track.artists?.reduce((acc, artist) =>
-              acc + artist.name + ', '
-            , '')}</b>
+          <b>{artistText}</b>
         </div>
       </div>
       <button className='like-btn' onClick={liked ? () => removeFromFavorite(track) : () => addToFavorite(track)}>

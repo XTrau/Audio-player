@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {useSelector} from "react-redux";
 import './TrackController.scss'
 
@@ -20,6 +20,11 @@ function TrackController({
   useEffect(() => {
     audioRef.current.volume = (volume / 100).toFixed(2)
   }, [volume, audioRef])
+
+  const artistText = useMemo(() => {
+    const text = currentTrack.artists.reduce((acc, artist) => acc + artist.name + ', ', '')
+    return text.substring(0, text.length - 2)
+  }, [currentTrack.artists])
 
   const updateTrackTime = () => {
     const percent =
@@ -86,7 +91,7 @@ function TrackController({
         <img src={`http://localhost:5000/${currentTrack.image_url}`} alt='' width={70} height={70}/>
         <div className='track-description'>
           <h2>{currentTrack.name}</h2>
-          <b>{currentTrack.artists?.reduce((acc, artist) => acc + artist.name + ', ', '')}</b>
+          <b>{artistText}</b>
         </div>
       </div>
 
