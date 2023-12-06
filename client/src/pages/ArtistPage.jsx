@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {useParams} from "react-router-dom";
 import axios from "../axios";
 import Track from "../components/Track/Track";
+import {Link} from 'react-router-dom'
 
 function ArtistPage({
                       audioRef,
@@ -36,14 +37,16 @@ function ArtistPage({
       <div className='album-slider d-flex'>
         {artist.albums?.map((album) => {
           return (
-            <div className='d-flex flex-column mx-2 p-2 bg-white rounded-3' key={album.id}>
-              <img src={`http://localhost:5000/${album.image_url}`} alt='' width={200}/>
-              <b>{album.name}</b>
-              <b className='opacity-50'>{(() => {
-                const text = album.artists?.reduce((acc, artist) => acc + artist.name + ', ', '')
-                return text.substring(0, text.length - 2)
-              })()}</b>
-            </div>
+            <Link to={`/album/${album.name.replaceAll(' ', '_')}/${album.id}`}>
+              <div className='album-wrapper d-flex flex-column mx-2 p-2 rounded-3 shadow c-pointer' key={album.id}>
+                <img src={`http://localhost:5000/${album.image_url}`} alt='' className='rounded-2' width={200}/>
+                <b>{album.name}</b>
+                <b className='opacity-75'>{(() => {
+                  const text = album.artists?.reduce((acc, artist) => acc + artist.name + ', ', '')
+                  return text.substring(0, text.length - 2)
+                })()}</b>
+              </div>
+            </Link>
           )
         })}
       </div>

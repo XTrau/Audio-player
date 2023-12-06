@@ -85,7 +85,7 @@ class AlbumService {
               ) AS album
        FROM album
        WHERE album.id = $1;`, [id])
-    return album.rows[0]
+    return album.rows[0].album
   }
 
 

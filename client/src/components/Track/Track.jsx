@@ -30,7 +30,7 @@ function Track({
   }
 
   return (
-    <li className={(playNow ? 'play' : '') + ' track-wrapper'}>
+    <li className={(playNow ? 'play' : '') + ' track-wrapper shadow'}>
       <button
         className='play-btn'
         onClick={playNow ? onClickPause : onClickPlay}
@@ -43,7 +43,7 @@ function Track({
           <span>{track.name}</span>
           <span>{
             track.artists.map((artist, index) => (
-              <Link to={`/artist/${artist.id}`}>
+              <Link to={`/artist/${artist.name.replaceAll(' ', '_')}/${artist.id}`}>
                 <b>{artist.name + (index !== track.artists.length - 1 ? ',' : '')}</b>
               </Link>
             ))

@@ -1,6 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {useSelector} from "react-redux";
 import './TrackController.scss'
+import {Link} from "react-router-dom";
 
 function TrackController({
                            trackControllerProps: {
@@ -93,7 +94,13 @@ function TrackController({
              width={70} height={70}/>
         <div className='track-description'>
           <h2>{currentTrack.name}</h2>
-          <b>{artistText}</b>
+          <span>{
+            currentTrack.artists.map((artist, index) => (
+              <Link to={`/artist/${artist.name.replaceAll(' ', '_')}/${artist.id}`}>
+                <b className='text-white'>{artist.name + (index !== currentTrack.artists.length - 1 ? ',' : '')}</b>
+              </Link>
+            ))
+          }</span>
         </div>
       </div>
 

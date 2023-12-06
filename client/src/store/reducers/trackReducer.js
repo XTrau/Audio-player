@@ -3,7 +3,7 @@ const initialState = {
   name:
     'Loading...',
   artists:
-    ['Loading...'],
+    [],
   image_url:
     '',
   audio_url:

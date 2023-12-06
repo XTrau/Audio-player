@@ -52,7 +52,7 @@ main {
     border-radius: 10px;
     height: 100%;
     width: 60%;
-    background: rgba(209, 209, 209, 0.564);
+    background: rgba(209, 209, 209, 0);
 
     h1 {
       margin-left: 20px;
@@ -369,12 +369,37 @@ footer {
   z-index: 5;
 }
 
+.c-pointer {
+  cursor: pointer;
+}
+
 .delete-artist {
   color: white;
   border-radius: .5rem 0 .5rem 0;
   margin-right: .5rem;
   overflow: hidden;
   background: linear-gradient(135deg, #454c54, #19194d);
+}
+
+.album-wrapper {
+  transition: .2s;
+
+  b, img {
+    margin: 2px 0;
+  }
+
+  &:hover {
+    background: #c0c0c0;
+  }
+}
+
+.album-main {
+  b {
+    opacity: .5;
+    &:hover {
+      opacity: 1;
+    }
+  }
 }
 
 

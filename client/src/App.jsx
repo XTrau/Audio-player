@@ -8,6 +8,7 @@ import Favorite from './pages/Favorite'
 import AddArtist from './pages/AddAuthor'
 import AddAlbum from "./pages/AddAlbum";
 import ArtistPage from "./pages/ArtistPage";
+import AlbumPage from "./pages/AlbumPage";
 
 import {useDispatch, useSelector} from "react-redux";
 
@@ -88,7 +89,7 @@ function App() {
     })
     setTimeout(() => {
       playTrack()
-    }, 0)
+    }, 10)
   }
 
   function toNextTrack() {
@@ -99,7 +100,7 @@ function App() {
     })
     setTimeout(() => {
       playTrack()
-    }, 0)
+    }, 10)
   }
 
   const addToFavorite = (track) => {
@@ -147,8 +148,18 @@ function App() {
         />
         <Route path='/add_artist' element={<AddArtist/>}/>
         <Route path='/add_track' element={<AddAlbum/>}/>
-        <Route path='/artist/:id' element={
+        <Route path='/artist/:name/:id' element={
           <ArtistPage
+            favoriteList={favoriteList}
+            selectTrack={selectTrack}
+            playTrack={playTrack}
+            pauseTrack={pauseTrack}
+            audioRef={audioRef}
+            addToFavorite={addToFavorite}
+            removeFromFavorite={removeFromFavorite}
+          />}/>
+        <Route path='/album/:name/:id' element={
+          <AlbumPage
             favoriteList={favoriteList}
             selectTrack={selectTrack}
             playTrack={playTrack}

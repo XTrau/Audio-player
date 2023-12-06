@@ -22,7 +22,8 @@
   }
 
   &:hover {
-    background: linear-gradient(135deg, rgb(209, 209, 209), rgb(180, 180, 180)) ;
+    background: #c0c0c0;
+
   }
 
   .track-info {
@@ -46,7 +47,6 @@
       }
 
       b {
-        margin-right: 10px;
         cursor: pointer;
         margin-right: 3px;
 
