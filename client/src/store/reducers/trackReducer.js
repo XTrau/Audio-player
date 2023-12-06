@@ -1,12 +1,12 @@
 const initialState = {
   id: -1,
-  title:
+  name:
     'Loading...',
-  authorName:
-    'Loading...',
-  image:
+  artists:
+    ['Loading...'],
+  image_url:
     '',
-  audio:
+  audio_url:
     '',
   paused:
     true,
@@ -29,8 +29,7 @@ export const currentTrackReducer = (state = initialState, action) => {
         ...state,
         paused: true
       }
-
     default:
-      return state
+      return {...state}
   }
 }

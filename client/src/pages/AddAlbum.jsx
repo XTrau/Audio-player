@@ -6,11 +6,9 @@ import TextField from "@mui/material/TextField";
 import AddTrack from "../components/AddTrack/AddTrack";
 
 function AddAlbum() {
-
   const [addTracks, setAddTracks] = useState([{
     title: '', artists: [], image: undefined, imageFile: undefined, audio: undefined,
   }])
-
 
   const [artistSearchValue, setArtistSearchValue] = useState('')
   const [artists, setArtists] = useState([])
@@ -25,7 +23,6 @@ function AddAlbum() {
     axios.get('/api/artist')
       .then(data => {
         shuffleArtists(data.data)
-
       })
       .catch(err => console.log(err))
   }, [])
@@ -102,13 +99,25 @@ function AddAlbum() {
   }
 
   const sendAlbum = async () => {
+    if (!albumTitle || albumArtists.length === 0 || !albumImageFile) {
+      alert("Заполните все поля")
+      return;
+    }
+
+    for (const track of addTracks) {
+      if (!track.title || !track.audio || !track.imageFile || track.artists.length === 0) {
+        alert("Заполните все поля")
+        return;
+      }
+    }
+
+
     const fd = new FormData()
     fd.append('artists', JSON.stringify(albumArtists))
     fd.append('name', albumTitle)
     fd.append('image', albumImageFile)
 
     axios.post('/api/album', fd).then((res) => {
-      console.log("ALBUM: ")
       console.log(res.data)
       sendTracks(res.data.id)
       alert("Added")

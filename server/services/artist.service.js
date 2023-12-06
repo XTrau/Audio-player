@@ -49,38 +49,46 @@ class ArtistService {
   async getOne(id) {
     if (!id) throw new Error('Не указан ID')
     const artist = await db.query(
-      `SELECT jsonb_agg(jsonb_build_object(
+      `SELECT json_agg(json_build_object(
               'id', art.id,
               'name', art.name,
               'image_url', art.image_url,
+              'tracks', (SELECT jsonb_agg(jsonb_build_object(
+                      'id', track.id,
+                      'name', track.name,
+                      'image_url', track.image_url,
+                      'audio_url', track.audio_url,
+                      'artists',
+                      (SELECT json_agg(json_build_object(
+                              'id', artist.id,
+                              'name', artist.name,
+                              'image_url', artist.image_url
+                                       ))
+                       FROM artist
+                                JOIN artist_track ON artist.id = artist_track.artist_id
+                       WHERE artist_track.track_id = track.id)
+                                          ))
+                         FROM track
+                                  JOIN artist_track on track.id = artist_track.track_id
+                         WHERE artist_track.artist_id = art.id),
               'albums', (SELECT jsonb_agg(jsonb_build_object(
                       'id', alb.id,
                       'name', alb.name,
                       'image_url', alb.image_url,
-                      'tracks', (SELECT jsonb_agg(jsonb_build_object(
-                              'id', track.id,
-                              'name', track.name,
-                              'image_url', track.image_url,
-                              'audio_url', track.audio_url,
-                              'artists', (
-                              SELECT jsonb_agg(jsonb_build_object(
-                                      'id', artist.id,
-                                      'name', artist.name,
-                                      'image_url', artist.image_url
-                                                           ))
-                                          FROM artist
-                                                   JOIN artist_track ON artist.id = artist_track.artist_id
-                                          WHERE artist_track.track_id = track.id)
-                                                  ))
-                                 FROM track
-                                 WHERE track.album_id = alb.id)))
+                      'artists', (SELECT jsonb_agg(json_build_object(
+                              'id', artist.id,
+                              'name', artist.name))
+                                  FROM artist
+                                           JOIN artist_album on artist.id = artist_album.artist_id
+                                  WHERE artist_album.album_id = alb.id)
+                                          ))
                          FROM album alb
                                   JOIN artist_album aa ON alb.id = aa.album_id
                          WHERE aa.artist_id = art.id)
-                        )) AS artist
+                       )) AS artist
        FROM artist art
        WHERE art.id = $1;`, [id])
-    return artist.rows[0]
+    return artist.rows[0].artist[0]
   }
 
 

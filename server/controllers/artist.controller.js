@@ -22,6 +22,7 @@ class ArtistController {
 
   async getOne(req, res) {
     try {
+
       const author = await artistService.getOne(req.params.id)
       res.json(author)
     } catch (e) {

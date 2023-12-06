@@ -1,13 +1,13 @@
-import React from 'react'
-import {useEffect, useRef, useState} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {Routes, Route} from 'react-router-dom'
 
 import Layout from './components/Layout/Layout'
 
 import Music from './pages/Music'
 import Favorite from './pages/Favorite'
-import AddAuthor from './pages/AddAuthor'
+import AddArtist from './pages/AddAuthor'
 import AddAlbum from "./pages/AddAlbum";
+import ArtistPage from "./pages/ArtistPage";
 
 import {useDispatch, useSelector} from "react-redux";
 
@@ -26,9 +26,10 @@ function App() {
   const [search, setSearch] = useState('')
   const audioRef = useRef()
 
+  const [artistListStatus, setArtistListStatus] = useState({x: 0, y: 0, hidden: true, artists: []})
+
   useEffect(() => {
     axios.get('/api/track').then(data => {
-      console.log(data.data)
       if (data.data) {
         setTrackList(data.data)
         selectTrack(0, data.data)
@@ -41,26 +42,26 @@ function App() {
   }, [currentList, trackIndex])
 
   async function playTrack() {
+    if (audioRef.current.play === undefined) return
     dispatch({type: 'PLAY_TRACK'})
-    if (audioRef.current.play !== undefined)
-      await audioRef.current.play()
+    await audioRef.current.play()
   }
 
   async function pauseTrack() {
+    if (audioRef.current.pause === undefined) return
     dispatch({type: 'PAUSE_TRACK'})
+    await audioRef.current.pause()
 
-    if (audioRef.current.pause !== undefined)
-      await audioRef.current.pause()
   }
 
   const updateTrack = () => {
-    dispatch({type: 'CHANGE_TRACK', payload: currentList[trackIndex]})
+    if (currentList[trackIndex]) dispatch({type: 'CHANGE_TRACK', payload: currentList[trackIndex]})
   }
 
   function selectTrack(index, list) {
     setCurrentList(list)
     setTrackIndex(index)
-    dispatch({type: 'CHANGE_TRACK', payload: currentList[trackIndex]})
+    dispatch({type: 'CHANGE_TRACK', payload: list[index]})
   }
 
   function shuffleTracks(array) {
@@ -68,34 +69,37 @@ function App() {
     while (currentIndex > 0) {
       randomIndex = Math.floor(Math.random() * currentIndex)
       currentIndex--;
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]]
+      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]
     }
-    setTrackList(array)
+
+    for (const index in array) {
+      if (array[index].id === currentTrack.id) {
+        selectTrack(index, array)
+        return;
+      }
+    }
   }
 
   function toPrevTrack() {
     setTrackIndex(prev => {
       prev--
-      if (prev < 0)
-        return trackList.length - 1
+      if (prev < 0) return trackList.length - 1
       return prev
     })
     setTimeout(() => {
       playTrack()
-    }, 10)
+    }, 0)
   }
 
   function toNextTrack() {
     setTrackIndex(prev => {
       prev++
-      if (prev >= currentList.length)
-        return 0
+      if (prev >= currentList.length) return 0
       return prev
     })
     setTimeout(() => {
       playTrack()
-    }, 10)
+    }, 0)
   }
 
   const addToFavorite = (track) => {
@@ -103,7 +107,7 @@ function App() {
   }
 
   const removeFromFavorite = (track) => {
-    setFavoriteList(prev => prev.filter(el => el !== track))
+    setFavoriteList(prev => prev.filter(el => el.id !== track.id))
   }
 
   return (
@@ -117,14 +121,14 @@ function App() {
               trackList={trackList}
               favoriteList={favoriteList}
               search={search}
+              shuffleTracks={shuffleTracks}
               selectTrack={selectTrack}
               playTrack={playTrack}
               pauseTrack={pauseTrack}
               audioRef={audioRef}
               addToFavorite={addToFavorite}
               removeFromFavorite={removeFromFavorite}
-            />
-          }
+            />}
         />
         <Route
           path='/favorite'
@@ -134,18 +138,27 @@ function App() {
               search={search}
               selectTrack={selectTrack}
               playTrack={playTrack}
+              shuffleTracks={shuffleTracks}
               pauseTrack={pauseTrack}
               audioRef={audioRef}
               addToFavorite={addToFavorite}
               removeFromFavorite={removeFromFavorite}
-            />
-          }
+            />}
         />
-        <Route path='/add_author' element={<AddAuthor/>}/>
+        <Route path='/add_artist' element={<AddArtist/>}/>
         <Route path='/add_track' element={<AddAlbum/>}/>
+        <Route path='/artist/:id' element={
+          <ArtistPage
+            favoriteList={favoriteList}
+            selectTrack={selectTrack}
+            playTrack={playTrack}
+            pauseTrack={pauseTrack}
+            audioRef={audioRef}
+            addToFavorite={addToFavorite}
+            removeFromFavorite={removeFromFavorite}
+          />}/>
       </Routes>
-    </Layout>
-  )
+    </Layout>)
 }
 
 export default App

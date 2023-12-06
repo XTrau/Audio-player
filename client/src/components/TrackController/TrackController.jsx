@@ -22,6 +22,7 @@ function TrackController({
   }, [volume, audioRef])
 
   const artistText = useMemo(() => {
+    if (!currentTrack.artists) return ''
     const text = currentTrack.artists.reduce((acc, artist) => acc + artist.name + ', ', '')
     return text.substring(0, text.length - 2)
   }, [currentTrack.artists])
@@ -65,7 +66,7 @@ function TrackController({
   return (
     <nav className='track-controller'>
       <audio
-        src={`http://localhost:5000/${currentTrack.audio_url}`}
+        src={currentTrack.audio_url ? `http://localhost:5000/${currentTrack.audio_url}` : ''}
         onEnded={toNextTrack}
         onLoadedMetadata={getDurationTime}
         ref={audioRef}
@@ -73,8 +74,8 @@ function TrackController({
       ></audio>
 
       <div className='controls'>
-        <button onClick={toPrevTrack}>
-          <span>prev</span>
+        <button onClick={toPrevTrack} className='left-next'>
+          <span></span>
         </button>
         <button
           className='play-btn'
@@ -82,13 +83,14 @@ function TrackController({
         >
           <span className={currentTrack.paused ? 'play-img' : 'pause-img'}></span>
         </button>
-        <button>
-          <span onClick={toNextTrack}>next</span>
+        <button onClick={toNextTrack} className='right-next'>
+          <span></span>
         </button>
       </div>
 
       <div className='track-info'>
-        <img src={`http://localhost:5000/${currentTrack.image_url}`} alt='' width={70} height={70}/>
+        <img src={currentTrack.image_url ? `http://localhost:5000/${currentTrack.image_url}` : ''} alt=''
+             width={70} height={70}/>
         <div className='track-description'>
           <h2>{currentTrack.name}</h2>
           <b>{artistText}</b>

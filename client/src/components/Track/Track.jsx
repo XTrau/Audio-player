@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react'
 import './Track.scss'
 import {useSelector} from "react-redux";
+import {Link} from "react-router-dom";
 
 function Track({
                  track,
@@ -19,14 +20,9 @@ function Track({
     [track.id, currentTrack.id, currentTrack.paused]
   )
 
-  const artistText = useMemo(() => {
-    const text = track.artists.reduce((acc, artist) => acc + artist.name + ', ', '')
-    return text.substring(0, text.length - 2)
-  }, [track.artists])
-
   function onClickPlay() {
     selectTrack(index, currentList)
-    setTimeout(() => playTrack(), 0)
+    setTimeout(() => playTrack(), 10)
   }
 
   function onClickPause() {
@@ -45,7 +41,13 @@ function Track({
       <div className='track-info'>
         <div className='title'>
           <span>{track.name}</span>
-          <b>{artistText}</b>
+          <span>{
+            track.artists.map((artist, index) => (
+              <Link to={`/artist/${artist.id}`}>
+                <b>{artist.name + (index !== track.artists.length - 1 ? ',' : '')}</b>
+              </Link>
+            ))
+          }</span>
         </div>
       </div>
       <button className='like-btn' onClick={liked ? () => removeFromFavorite(track) : () => addToFavorite(track)}>

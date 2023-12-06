@@ -27,11 +27,11 @@ function Header({headerProps: {search, setSearch}}) {
         <Link to='favorite'>
           <span>Favorite</span>
         </Link>
-        <Link to='add_author'>
+        <Link to='add_artist'>
           <span>Add Author</span>
         </Link>
         <Link to='add_track'>
-          <span>Add Track</span>
+          <span>Add Album</span>
         </Link>
       </div>
     </header>
