@@ -1,8 +1,8 @@
 import React, {useMemo} from 'react'
 import './Track.scss'
 import {useSelector} from "react-redux";
-import {Link} from "react-router-dom";
 import ArtistList from "../ArtistsList/ArtistList";
+import environment from "../../environment";
 
 function Track({
                  track,
@@ -38,7 +38,7 @@ function Track({
       >
         <span className={playNow ? 'pause-img' : 'play-img'}>play</span>
       </button>
-      <img src={`http://localhost:5000/${track.image_url}`} alt='preview' height={50}/>
+      <img src={`${environment.API_URL}/${track.image_url}`} alt='preview' height={50}/>
       <div className='track-info'>
         <div className='title'>
           <span>{track.name}</span>

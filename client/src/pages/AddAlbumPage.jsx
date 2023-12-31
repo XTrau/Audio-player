@@ -4,6 +4,7 @@ import axios from "../axios";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import AddTrack from "../components/AddTrack/AddTrack";
+import environment from "../environment";
 
 function AddAlbumPage() {
   const [addTracks, setAddTracks] = useState([{
@@ -189,7 +190,7 @@ function AddAlbumPage() {
                     e.preventDefault()
                     setAlbumArtists(prev => prev.filter(art => art.id !== artist.id))
                   }}>
-                    <img src={`http://localhost:5000/${artist.image_url}`} alt="" width={30} height={30} className=''/>
+                    <img src={`${environment.API_URL}/${artist.image_url}`} alt="" width={30} height={30} className=''/>
                     <span className='mx-2'>{artist.name}</span>
                     <span className='mx-sm-1'>&#10006;</span>
                   </button>))

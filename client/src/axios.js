@@ -1,5 +1,6 @@
 import axios from 'axios'
+import environment from "./environment";
 
 export default axios.create({
-  baseURL: 'https://audio-player-8t11.onrender.com'
+  baseURL: environment.API_URL
 })

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Link, useParams} from "react-router-dom";
 import axios from "../axios";
 import Track from "../components/Track/Track";
+import environment from '../environment'
 
 function AlbumPage({
                      audioRef,
@@ -26,7 +27,7 @@ function AlbumPage({
   return (
     <>
       <div className='album-main d-flex m-2 bg-white p-3'>
-        <img src={`http://localhost:5000/${album.image_url}`} alt='' className='rounded-2' width={150} height={150}/>
+        <img src={`${environment.API_URL}/${album.image_url}`} alt='' className='rounded-2' width={150} height={150}/>
         <div className='m-3'>
           <h2>{album.name}</h2>
           <span>{

@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react'
 import {useSelector} from "react-redux";
 import './TrackController.scss'
 import ArtistList from "../ArtistsList/ArtistList";
+import environment from "../../environment";
 
 function TrackController({
                            trackControllerProps: {
@@ -67,7 +68,7 @@ function TrackController({
   return (
     <nav className='track-controller'>
       <audio
-        src={currentTrack.audio_url ? `http://localhost:5000/${currentTrack.audio_url}` : ''}
+        src={currentTrack.audio_url ? `${environment.API_URL}/${currentTrack.audio_url}` : ''}
         onEnded={toNextTrack}
         onLoadedMetadata={getDurationTime}
         ref={audioRef}
@@ -90,7 +91,7 @@ function TrackController({
       </div>
 
       <div className='track-info'>
-        <img src={currentTrack.image_url ? `http://localhost:5000/${currentTrack.image_url}` : ''} alt=''
+        <img src={currentTrack.image_url ? `${environment.API_URL}/${currentTrack.image_url}` : ''} alt=''
              width={70} height={70}/>
         <div className='track-description'>
           <h2>{currentTrack.name}</h2>

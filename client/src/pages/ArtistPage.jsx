@@ -3,6 +3,7 @@ import {useParams} from "react-router-dom";
 import axios from "../axios";
 import Track from "../components/Track/Track";
 import {Link} from 'react-router-dom'
+import environment from "../environment";
 
 function ArtistPage({
                       audioRef,
@@ -28,7 +29,7 @@ function ArtistPage({
   return (
     <>
       <div className='d-flex m-2 bg-white p-3'>
-        <img src={`http://localhost:5000/${artist.image_url}`} alt='' className='rounded-2' width={150} height={150}/>
+        <img src={`${environment.API_URL}/${artist.image_url}`} alt='' className='rounded-2' width={150} height={150}/>
         <div className='m-3'>
           <h2>{artist.name}</h2>
           <div>{(artist.albums?.length ? artist.albums?.length : 0) + ' Альбомов'}</div>
@@ -41,7 +42,7 @@ function ArtistPage({
           return (
             <Link to={`/album/${album.name.replaceAll(' ', '_')}/${album.id}`}>
               <div className='album-wrapper d-flex flex-column mx-2 p-2 rounded-3 shadow c-pointer' key={album.id}>
-                <img src={`http://localhost:5000/${album.image_url}`} alt='' className='rounded-2' width={200}/>
+                <img src={`${environment.API_URL}/${album.image_url}`} alt='' className='rounded-2' width={200}/>
                 <b>{album.name}</b>
                 <b className='opacity-75'>{(() => {
                   const text = album.artists?.reduce((acc, artist) => acc + artist.name + ', ', '')
