@@ -20,6 +20,10 @@ app.use('/api', authorRouter)
 app.use('/api', albumRouter)
 app.use('/api', trackRouter)
 
+app.get('/test', (req, res) => {
+  res.json({MESSAGE: "HELLO"});
+})
+
 app.listen(PORT, () => {
   console.log(`Backend started on port ${PORT}...`)
 })
