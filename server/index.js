@@ -2,6 +2,7 @@ const express = require('express')
 const authorRouter = require('./routes/artist.routes')
 const albumRouter = require('./routes/album.routes')
 const trackRouter = require('./routes/track.routes')
+const {initDB} = require('./db')
 
 const fileUpload = require('express-fileupload')
 const cors = require('cors')
@@ -19,4 +20,6 @@ app.use('/api', authorRouter)
 app.use('/api', albumRouter)
 app.use('/api', trackRouter)
 
-app.listen(PORT, () => console.log(`Backend started on port ${PORT}...`))
+app.listen(PORT, () => {
+  console.log(`Backend started on port ${PORT}...`)
+})

@@ -33,10 +33,10 @@ function Track({
   return (
     <li className={(playNow ? 'play' : '') + ' track-wrapper shadow'}>
       <button
-        className='play-btn'
+        className='play-btn hide-text'
         onClick={playNow ? onClickPause : onClickPlay}
       >
-        <span className={playNow ? 'pause-img' : 'play-img'}></span>
+        <span className={playNow ? 'pause-img' : 'play-img'}>play</span>
       </button>
       <img src={`http://localhost:5000/${track.image_url}`} alt='preview' height={50}/>
       <div className='track-info'>
@@ -48,7 +48,8 @@ function Track({
           }
         </div>
       </div>
-      <button className='like-btn' onClick={liked ? () => removeFromFavorite(track) : () => addToFavorite(track)}>
+      <button className='like-btn hide-text' onClick={liked ? () => removeFromFavorite(track) : () => addToFavorite(track)}>
+        {liked ? 'like' : 'unlike' }
         <svg
           width='32'
           height='32'
@@ -68,7 +69,7 @@ function Track({
         </svg>
       </button>
       <button className='three-dot-btn'>
-        <div className='three-dot'></div>
+        <div className='three-dot hide-text'>settings</div>
       </button>
     </li>
   )

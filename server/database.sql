@@ -1,18 +1,18 @@
-create TABLE artist
+create TABLE IF NOT EXISTS artist
 (
     id        SERIAL PRIMARY KEY,
     name      VARCHAR(255) NOT NULL,
     image_url VARCHAR(255) NOT NULL
 );
 
-create TABLE album
+create TABLE IF NOT EXISTS album
 (
     id        SERIAL PRIMARY KEY,
     name      VARCHAR(255) NOT NULL,
     image_url VARCHAR(255) NOT NULL
 );
 
-create TABLE track
+create TABLE IF NOT EXISTS track
 (
     id        SERIAL PRIMARY KEY,
     name      VARCHAR(255) NOT NULL,
@@ -22,7 +22,7 @@ create TABLE track
     FOREIGN KEY (album_id) REFERENCES album (id)
 );
 
-create TABLE artist_album
+create TABLE IF NOT EXISTS artist_album
 (
     artist_id INTEGER NOT NULL,
     FOREIGN KEY (artist_id) REFERENCES artist (id),
@@ -30,7 +30,7 @@ create TABLE artist_album
     FOREIGN KEY (album_id) REFERENCES album (id)
 );
 
-create TABLE artist_track
+create TABLE IF NOT EXISTS artist_track
 (
     artist_id INTEGER NOT NULL,
     FOREIGN KEY (artist_id) REFERENCES artist (id),

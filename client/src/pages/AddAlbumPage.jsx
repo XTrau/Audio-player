@@ -222,8 +222,6 @@ function AddAlbumPage() {
                 )
               }
             </div>
-
-
             <p className='mx-2'>There is no artist? <Link to='/add_artist' style={{color: "blue"}}>Add Artist</Link>
             </p>
           </div>

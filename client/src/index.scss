@@ -15,8 +15,8 @@ button {
 }
 
 a {
-  color: black;
   text-decoration: none;
+  color: inherit;
 }
 
 input {
@@ -45,6 +45,7 @@ main {
   display: flex;
   justify-content: center;
   width: 100%;
+
   ul {
     padding-left: .8rem;
   }
@@ -78,7 +79,7 @@ main {
       }
     }
   }
-  
+
   @media screen and (max-width: 800px) {
     .wrapper {
       width: 100%;
@@ -399,10 +400,14 @@ footer {
 .album-main {
   b {
     opacity: .5;
+
     &:hover {
       opacity: 1;
     }
   }
 }
 
+.hide-text {
+  font-size: 0;
+}
 

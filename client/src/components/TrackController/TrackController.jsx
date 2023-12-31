@@ -75,17 +75,17 @@ function TrackController({
       ></audio>
 
       <div className='controls'>
-        <button onClick={toPrevTrack} className='left-next'>
-          <span></span>
+        <button onClick={toPrevTrack} className='left-next hide-text'>
+          <span>previous track</span>
         </button>
         <button
-          className='play-btn'
+          className='play-btn hide-text'
           onClick={currentTrack.paused ? playTrack : pauseTrack}
         >
-          <span className={currentTrack.paused ? 'play-img' : 'pause-img'}></span>
+          <span className={currentTrack.paused ? 'play-img' : 'pause-img'}>play</span>
         </button>
-        <button onClick={toNextTrack} className='right-next'>
-          <span></span>
+        <button onClick={toNextTrack} className='right-next hide-text'>
+          <span>next track</span>
         </button>
       </div>
 
@@ -99,7 +99,8 @@ function TrackController({
       </div>
 
       <div className='audio-time-controller'>
-        <input type='range' value={trackTime} onChange={onChangeTrackTime}/>
+        <label htmlFor='timeline-range' className='hide-text'>Ползунок времени трека</label>
+        <input type='range' id='timeline-range' value={trackTime} onChange={onChangeTrackTime}/>
         <div className='times'>
           <b>{currentTime}</b>
           <b>{durationTime}</b>
@@ -107,8 +108,9 @@ function TrackController({
       </div>
 
       <div className='controls'>
+        <label htmlFor='volume-range' className='hide-text'>Ползунок звука</label>
         <input
-          className='volume-range'
+          id='volume-range'
           type='range'
           defaultValue={volume}
           onChangeCapture={onChangeVolume}
@@ -117,8 +119,8 @@ function TrackController({
             {volume}%
           </span>
 
-        <button className='three-dot-btn'>
-          <div className='three-dot'></div>
+        <button className='three-dot-btn hide-text'>
+          <div className='three-dot'>settings</div>
         </button>
       </div>
     </nav>

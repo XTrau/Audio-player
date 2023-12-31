@@ -6,6 +6,7 @@
   padding: 10px 15px;
   border-radius: 10px;
   background: white;
+  color: black;
   margin-bottom: 15px;
   transition: background 0.1s ease-in-out;
 
@@ -14,15 +15,15 @@
 
     &:hover {
       background: linear-gradient(
-        135deg,
-        rgb(210, 210, 210),
-        rgb(131, 131, 131)
+                      135deg,
+                      rgb(233, 233, 233),
+                      rgb(163, 163, 163)
       );
     }
   }
 
   &:hover {
-    background: #c0c0c0;
+    background: #dedede;
 
   }
 
@@ -64,13 +65,13 @@
       &.play-img {
         border-left: 20px solid rgb(129, 129, 129);
       }
-  
+
       &.pause-img {
         border-left: 4px solid rgb(129, 129, 129);
         border-right: 4px solid rgb(129, 129, 129);
       }
     }
-  
+
     &:hover {
       background: black;
     }
