@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import AddTrack from "../components/AddTrack/AddTrack";
 
-function AddAlbum() {
+function AddAlbumPage() {
   const [addTracks, setAddTracks] = useState([{
     title: '', artists: [], image: undefined, imageFile: undefined, audio: undefined,
   }])
@@ -72,9 +72,10 @@ function AddAlbum() {
 
   const changeTrackImage = (file, index) => {
     setAddTracks(prev => {
-      prev[index].imageFile = file
-      if (file)
+      if (file) {
+        prev[index].imageFile = file
         prev[index].image = URL.createObjectURL(file)
+      }
       return [...prev]
     })
   }
@@ -159,19 +160,16 @@ function AddAlbum() {
     if (e.target.files[0]) {
       setAlbumImageFile(e.target.files[0])
       setAlbumImage(URL.createObjectURL(e.target.files[0]))
-    } else {
-      setAlbumImageFile(undefined)
-      setAlbumImage(undefined)
     }
   }
 
   return (<>
-    <div className='p-3 rounded-3'>
-      <h3 className='text-center'>Add Album</h3>
-      <form>
+    <div className='rounded-3'>
+      <h1 className='text-center h2'>Add Album</h1>
+      <form className='p-2'>
         <div className='d-flex'>
-          <Button variant="standart" component="label" className='p-0 w-25'>
-            <img src={albumImage} alt="" className='object-fit-cover w-100 rounded-2'/>
+          <Button variant="standart" component="label" className='p-0'>
+            <img src={albumImage} alt="" width={230} height={230} className='img-fluid'/>
             <input type="file" accept="image/png, image/jpeg, image/jpg"
                    onChange={selectAlbumImage} hidden/>
           </Button>
@@ -226,7 +224,7 @@ function AddAlbum() {
             </div>
 
 
-            <p className='mx-2'>There is no author? <Link to='/add_author' style={{color: "blue"}}>Add Author</Link>
+            <p className='mx-2'>There is no artist? <Link to='/add_artist' style={{color: "blue"}}>Add Artist</Link>
             </p>
           </div>
         </div>
@@ -246,4 +244,4 @@ function AddAlbum() {
   </>);
 }
 
-export default AddAlbum;
+export default AddAlbumPage;

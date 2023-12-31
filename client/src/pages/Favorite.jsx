@@ -15,7 +15,7 @@ function Favorite({
   return (
     <>
       <div className='d-flex justify-content-between align-items-center'>
-        <h1 className="mx-5">Избранное</h1>
+        <h1>Избранное</h1>
         <button className='btn btn-primary h-100' onClick={() => shuffleTracks(favoriteList)}>Перемешать</button>
       </div>
 

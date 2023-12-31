@@ -5,8 +5,8 @@ import Layout from './components/Layout/Layout'
 
 import Music from './pages/Music'
 import Favorite from './pages/Favorite'
-import AddArtist from './pages/AddAuthor'
-import AddAlbum from "./pages/AddAlbum";
+import AddArtist from './pages/AddArtist'
+import AddAlbumPage from "./pages/AddAlbumPage";
 import ArtistPage from "./pages/ArtistPage";
 import AlbumPage from "./pages/AlbumPage";
 
@@ -17,17 +17,12 @@ import axios from './axios'
 function App() {
   const [trackList, setTrackList] = useState([])
   const [favoriteList, setFavoriteList] = useState([])
-
   const [currentList, setCurrentList] = useState([])
   const [trackIndex, setTrackIndex] = useState(0)
-
   const currentTrack = useSelector(store => store.currentTrack)
   const dispatch = useDispatch()
-
   const [search, setSearch] = useState('')
   const audioRef = useRef()
-
-  const [artistListStatus, setArtistListStatus] = useState({x: 0, y: 0, hidden: true, artists: []})
 
   useEffect(() => {
     axios.get('/api/track').then(data => {
@@ -111,65 +106,60 @@ function App() {
     setFavoriteList(prev => prev.filter(el => el.id !== track.id))
   }
 
-  return (
-    <Layout trackControllerProps={{audioRef, toPrevTrack, toNextTrack, playTrack, pauseTrack}}
-            headerProps={{search, setSearch}}>
-      <Routes>
-        <Route
-          path='/'
-          element={
-            <Music
-              trackList={trackList}
-              favoriteList={favoriteList}
-              search={search}
-              shuffleTracks={shuffleTracks}
-              selectTrack={selectTrack}
-              playTrack={playTrack}
-              pauseTrack={pauseTrack}
-              audioRef={audioRef}
-              addToFavorite={addToFavorite}
-              removeFromFavorite={removeFromFavorite}
-            />}
-        />
-        <Route
-          path='/favorite'
-          element={
-            <Favorite
-              favoriteList={favoriteList}
-              search={search}
-              selectTrack={selectTrack}
-              playTrack={playTrack}
-              shuffleTracks={shuffleTracks}
-              pauseTrack={pauseTrack}
-              audioRef={audioRef}
-              addToFavorite={addToFavorite}
-              removeFromFavorite={removeFromFavorite}
-            />}
-        />
-        <Route path='/add_artist' element={<AddArtist/>}/>
-        <Route path='/add_track' element={<AddAlbum/>}/>
-        <Route path='/artist/:name/:id' element={
-          <ArtistPage
-            favoriteList={favoriteList}
-            selectTrack={selectTrack}
-            playTrack={playTrack}
-            pauseTrack={pauseTrack}
-            audioRef={audioRef}
-            addToFavorite={addToFavorite}
-            removeFromFavorite={removeFromFavorite}
-          />}/>
-        <Route path='/album/:name/:id' element={
-          <AlbumPage
-            favoriteList={favoriteList}
-            selectTrack={selectTrack}
-            playTrack={playTrack}
-            pauseTrack={pauseTrack}
-            audioRef={audioRef}
-            addToFavorite={addToFavorite}
-            removeFromFavorite={removeFromFavorite}
-          />}/>
-      </Routes>
-    </Layout>)
+  return (<Layout trackControllerProps={{audioRef, toPrevTrack, toNextTrack, playTrack, pauseTrack}}
+                  headerProps={{search, setSearch}}>
+    <Routes>
+      <Route
+        path='/'
+        element={<Music
+          trackList={trackList}
+          favoriteList={favoriteList}
+          search={search}
+          shuffleTracks={shuffleTracks}
+          selectTrack={selectTrack}
+          playTrack={playTrack}
+          pauseTrack={pauseTrack}
+          audioRef={audioRef}
+          addToFavorite={addToFavorite}
+          removeFromFavorite={removeFromFavorite}
+        />}
+      />
+      <Route
+        path='/favorite'
+        element={<Favorite
+          favoriteList={favoriteList}
+          search={search}
+          selectTrack={selectTrack}
+          playTrack={playTrack}
+          shuffleTracks={shuffleTracks}
+          pauseTrack={pauseTrack}
+          audioRef={audioRef}
+          addToFavorite={addToFavorite}
+          removeFromFavorite={removeFromFavorite}
+        />}
+      />
+      <Route path='/add_artist' element={<AddArtist/>}/>
+      <Route path='/add_track' element={<AddAlbumPage/>}/>
+      <Route path='/artist/:name/:id' element={<ArtistPage
+        favoriteList={favoriteList}
+        selectTrack={selectTrack}
+        playTrack={playTrack}
+        pauseTrack={pauseTrack}
+        audioRef={audioRef}
+        addToFavorite={addToFavorite}
+        removeFromFavorite={removeFromFavorite}
+      />}/>
+      <Route path='/album/:name/:id' element={<AlbumPage
+        favoriteList={favoriteList}
+        selectTrack={selectTrack}
+        playTrack={playTrack}
+        pauseTrack={pauseTrack}
+        audioRef={audioRef}
+        addToFavorite={addToFavorite}
+        removeFromFavorite={removeFromFavorite}
+      />}/>
+    </Routes>
+  </Layout>)
 }
 
 export default App

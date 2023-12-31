@@ -31,6 +31,8 @@ function ArtistPage({
         <img src={`http://localhost:5000/${artist.image_url}`} alt='' className='rounded-2' width={150} height={150}/>
         <div className='m-3'>
           <h2>{artist.name}</h2>
+          <div>{(artist.albums?.length ? artist.albums?.length : 0) + ' Альбомов'}</div>
+          <div>{(artist.tracks?.length ? artist.tracks?.length : 0) + ' Треков'}</div>
         </div>
       </div>
 

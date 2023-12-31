@@ -34,7 +34,6 @@
 
     b {
       font-size: 12px;
-      opacity: 0.5;
     }
 
     .title {
@@ -44,15 +43,6 @@
 
       span {
         font-weight: 600;
-      }
-
-      b {
-        cursor: pointer;
-        margin-right: 3px;
-
-        &:hover {
-          opacity: 1;
-        }
       }
     }
   }

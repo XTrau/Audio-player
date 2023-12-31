@@ -1,0 +1,12 @@
+.artist-list {
+  margin: 0;
+  padding: 0;
+
+  b {
+    opacity: .5;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

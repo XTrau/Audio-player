@@ -16,9 +16,9 @@ function AddTrack({
   const [artistSearchValue, setArtistSearchValue] = useState('')
   const [onArtistSearchFocused, setOnArtistSearchFocused] = useState()
   return (
-    <div className='d-flex align-items-center px-2 m-2'>
+    <div className='d-flex align-items-center mt-2'>
       <Button variant="standart" component="label" className='p-0'>
-        <img src={track.image} alt="" width={140} height={140} className='object-fit-cover rounded-2'/>
+        <img src={track.image} alt="" width={170} height={170} className='object-fit-cover rounded-2 border-0 img-fluid'/>
         <input type="file" accept="image/png, image/jpeg, image/jpg"
                onChange={(e) => changeImage(e.target.files[0], index)} hidden/>
       </Button>

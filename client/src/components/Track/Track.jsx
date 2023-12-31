@@ -2,6 +2,7 @@ import React, {useMemo} from 'react'
 import './Track.scss'
 import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
+import ArtistList from "../ArtistsList/ArtistList";
 
 function Track({
                  track,
@@ -41,13 +42,10 @@ function Track({
       <div className='track-info'>
         <div className='title'>
           <span>{track.name}</span>
-          <span>{
-            track.artists.map((artist, index) => (
-              <Link to={`/artist/${artist.name.replaceAll(' ', '_')}/${artist.id}`}>
-                <b>{artist.name + (index !== track.artists.length - 1 ? ',' : '')}</b>
-              </Link>
-            ))
-          }</span>
+          {
+            track.artists &&
+            <ArtistList artists={track.artists}/>
+          }
         </div>
       </div>
       <button className='like-btn' onClick={liked ? () => removeFromFavorite(track) : () => addToFavorite(track)}>
