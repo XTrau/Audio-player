@@ -18,11 +18,14 @@ function App() {
   const [trackList, setTrackList] = useState([])
   const [favoriteList, setFavoriteList] = useState([])
   const [currentList, setCurrentList] = useState([])
-  const [trackIndex, setTrackIndex] = useState(0)
+
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0)
   const currentTrack = useSelector(store => store.currentTrack)
-  const dispatch = useDispatch()
+
   const [search, setSearch] = useState('')
+
   const audioRef = useRef()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     axios.get('/api/track').then(data => {
@@ -35,7 +38,7 @@ function App() {
 
   useEffect(() => {
     updateTrack()
-  }, [currentList, trackIndex])
+  }, [currentList, currentTrackIndex])
 
   async function playTrack() {
     if (audioRef.current.play === undefined) return
@@ -51,12 +54,12 @@ function App() {
   }
 
   const updateTrack = () => {
-    if (currentList[trackIndex]) dispatch({type: 'CHANGE_TRACK', payload: currentList[trackIndex]})
+    if (currentList[currentTrackIndex]) dispatch({type: 'CHANGE_TRACK', payload: currentList[currentTrackIndex]})
   }
 
   function selectTrack(index, list) {
     setCurrentList(list)
-    setTrackIndex(index)
+    setCurrentTrackIndex(index)
     dispatch({type: 'CHANGE_TRACK', payload: list[index]})
   }
 
@@ -77,7 +80,7 @@ function App() {
   }
 
   function toPrevTrack() {
-    setTrackIndex(prev => {
+    setCurrentTrackIndex(prev => {
       prev--
       if (prev < 0) return trackList.length - 1
       return prev
@@ -88,7 +91,7 @@ function App() {
   }
 
   function toNextTrack() {
-    setTrackIndex(prev => {
+    setCurrentTrackIndex(prev => {
       prev++
       if (prev >= currentList.length) return 0
       return prev
