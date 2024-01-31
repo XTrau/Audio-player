@@ -1,31 +1,34 @@
-import React, {useEffect, useMemo, useState} from 'react'
-import {useSelector} from "react-redux";
+import React, {useContext, useEffect, useMemo, useReducer, useRef, useState} from 'react'
+import {useDispatch, useSelector} from "react-redux";
 import './TrackController.scss'
 import ArtistList from "../ArtistsList/ArtistList";
 import environment from "../../environment";
+import {toNextTrack, toPrevTrack, playTrack, pauseTrack} from "../../store/slices/currentTrackSlice";
 
-function TrackController({
-                           trackControllerProps: {
-                             audioRef,
-                             toPrevTrack,
-                             toNextTrack,
-                             playTrack,
-                             pauseTrack
-                           }
-                         }) {
-  const currentTrack = useSelector(store => store.currentTrack)
+function TrackController() {
+  const currentTrack = useSelector(store => store.currentTrack.track)
+  const paused = useSelector(store => store.currentTrack.paused)
+
   const [trackTime, setTrackTime] = useState(0)
   const [currentTime, setCurrentTime] = useState('00:00')
   const [durationTime, setDurationTime] = useState('00:00')
   const [volume, setVolume] = useState(localStorage.getItem('volume'))
 
+  const dispatch = useDispatch()
+  const audioRef = useRef()
+
   useEffect(() => {
     audioRef.current.volume = (volume / 100).toFixed(2)
   }, [volume, audioRef])
 
+  useEffect(() => {
+    if (paused) audioRef.current.pause()
+    else audioRef.current.play()
+  }, [paused, currentTrack])
+
   const artistText = useMemo(() => {
     if (!currentTrack.artists) return ''
-    const text = currentTrack.artists.reduce((acc, artist) => acc + artist.name + ', ', '')
+    const text = currentTrack.artists?.reduce((acc, artist) => acc + artist.name + ', ', '')
     return text.substring(0, text.length - 2)
   }, [currentTrack.artists])
 
@@ -65,27 +68,30 @@ function TrackController({
     setCurrentTime(time)
   }
 
+  if (!currentTrack) return (<div></div>)
   return (
     <nav className='track-controller'>
       <audio
         src={currentTrack.audio_url ? `${environment.API_URL}/${currentTrack.audio_url}` : ''}
-        onEnded={toNextTrack}
+        onEnded={() => dispatch(toNextTrack())}
         onLoadedMetadata={getDurationTime}
         ref={audioRef}
         onTimeUpdate={updateTrackTime}
       ></audio>
 
       <div className='controls'>
-        <button onClick={toPrevTrack} className='left-next hide-text'>
+        <button onClick={() => dispatch(toPrevTrack())} className='left-next hide-text'>
           <span>previous track</span>
         </button>
         <button
           className='play-btn hide-text'
-          onClick={currentTrack.paused ? playTrack : pauseTrack}
+          onClick={() => {
+            paused ? dispatch(playTrack()) : dispatch(pauseTrack())
+          }}
         >
-          <span className={currentTrack.paused ? 'play-img' : 'pause-img'}>play</span>
+          <span className={paused ? 'play-img' : 'pause-img'}>play</span>
         </button>
-        <button onClick={toNextTrack} className='right-next hide-text'>
+        <button onClick={() => dispatch(toNextTrack())} className='right-next hide-text'>
           <span>next track</span>
         </button>
       </div>

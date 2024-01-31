@@ -5,10 +5,7 @@ import Track from "../components/Track/Track";
 import environment from '../environment'
 
 function AlbumPage({
-                     audioRef,
                      selectTrack,
-                     playTrack,
-                     pauseTrack,
                      addToFavorite,
                      removeFromFavorite,
                      favoriteList,
@@ -32,7 +29,7 @@ function AlbumPage({
           <h2>{album.name}</h2>
           <span>{
             album.artists?.map((artist, index) => (
-              <Link to={`/artist/${artist.name.replaceAll(' ', '_')}/${artist.id}`}>
+              <Link to={`/artist/${artist.name.replaceAll(' ', '_')}/${artist.id}`} key={artist.id}>
                 <b className='mx-1'>{artist.name + (index !== album.artists.length - 1 ? ',' : '')}</b>
               </Link>
             ))
@@ -48,11 +45,8 @@ function AlbumPage({
               key={index}
               index={index}
               track={track}
-              audioRef={audioRef}
               selectTrack={selectTrack}
               currentList={album.tracks}
-              playTrack={playTrack}
-              pauseTrack={pauseTrack}
               addToFavorite={addToFavorite}
               removeFromFavorite={removeFromFavorite}
               liked={favoriteList.includes(track)}

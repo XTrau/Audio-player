@@ -5,10 +5,7 @@ function Favorite({
                     favoriteList,
                     search,
                     selectTrack,
-                    playTrack,
-                    pauseTrack,
                     shuffleTracks,
-                    audioRef,
                     addToFavorite,
                     removeFromFavorite
                   }) {
@@ -25,11 +22,8 @@ function Favorite({
             key={index}
             index={index}
             track={track}
-            audioRef={audioRef}
             selectTrack={selectTrack}
             currentList={favoriteList}
-            playTrack={playTrack}
-            pauseTrack={pauseTrack}
             addToFavorite={addToFavorite}
             removeFromFavorite={removeFromFavorite}
             liked={favoriteList.includes(track)}

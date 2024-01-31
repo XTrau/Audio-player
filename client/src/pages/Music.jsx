@@ -1,18 +1,16 @@
 import React from 'react'
 import Track from '../components/Track/Track'
+import {useSelector} from "react-redux";
 
 function Music({
-                 trackList,
                  favoriteList,
                  search,
                  shuffleTracks,
                  selectTrack,
-                 playTrack,
-                 pauseTrack,
-                 audioRef,
                  addToFavorite,
                  removeFromFavorite
                }) {
+  const trackList = useSelector(store => store.currentTrack.trackList)
   return (
     <>
       <div className='d-flex justify-content-between align-items-center'>
@@ -25,11 +23,8 @@ function Music({
             key={index}
             index={index}
             track={track}
-            audioRef={audioRef}
             selectTrack={selectTrack}
             currentList={trackList}
-            playTrack={playTrack}
-            pauseTrack={pauseTrack}
             addToFavorite={addToFavorite}
             removeFromFavorite={removeFromFavorite}
             liked={favoriteList.includes(track)}

@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 
 import Header from '../Header/Header'
 import TrackController from "../TrackController/TrackController";
 
-function Layout({children, trackControllerProps, headerProps}) {
+function Layout({children, headerProps}) {
   return (
     <>
       <Header headerProps={headerProps}/>
@@ -18,7 +18,7 @@ function Layout({children, trackControllerProps, headerProps}) {
 
       </footer>
 
-      <TrackController trackControllerProps={trackControllerProps}/>
+      <TrackController/>
     </>
   )
 }

@@ -1,33 +1,31 @@
-import React, {useMemo} from 'react'
+import React from 'react'
 import './Track.scss'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import ArtistList from "../ArtistsList/ArtistList";
 import environment from "../../environment";
+import {playTrack, pauseTrack} from "../../store/slices/currentTrackSlice";
 
 function Track({
                  track,
                  index,
                  selectTrack,
                  currentList,
-                 playTrack,
-                 pauseTrack,
                  addToFavorite,
                  removeFromFavorite,
                  liked
                }) {
-  const currentTrack = useSelector(store => store.currentTrack)
-  const playNow = useMemo(
-    () => track.id === currentTrack.id && currentTrack.paused === false,
-    [track.id, currentTrack.id, currentTrack.paused]
-  )
+  const currentTrack = useSelector(store => store.currentTrack.track)
+  const paused = useSelector(store => store.currentTrack.paused)
+  const playNow = track.id === currentTrack.id && !paused
+  const dispatch = useDispatch()
 
   function onClickPlay() {
     selectTrack(index, currentList)
-    setTimeout(() => playTrack(), 10)
+    dispatch(playTrack())
   }
 
   function onClickPause() {
-    pauseTrack()
+    dispatch(pauseTrack())
   }
 
   return (
@@ -48,8 +46,9 @@ function Track({
           }
         </div>
       </div>
-      <button className='like-btn hide-text' onClick={liked ? () => removeFromFavorite(track) : () => addToFavorite(track)}>
-        {liked ? 'like' : 'unlike' }
+      <button className='like-btn hide-text'
+              onClick={liked ? () => removeFromFavorite(track) : () => addToFavorite(track)}>
+        {liked ? 'like' : 'unlike'}
         <svg
           width='32'
           height='32'

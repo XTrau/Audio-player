@@ -6,10 +6,7 @@ import {Link} from 'react-router-dom'
 import environment from "../environment";
 
 function ArtistPage({
-                      audioRef,
                       selectTrack,
-                      playTrack,
-                      pauseTrack,
                       addToFavorite,
                       removeFromFavorite,
                       favoriteList,
@@ -21,7 +18,6 @@ function ArtistPage({
   useEffect(() => {
     const id = params.id
     axios.get(`/api/artist/${id}`).then(res => {
-      console.log(res.data)
       setArtist(res.data)
     })
   }, [params.id]);
@@ -38,10 +34,10 @@ function ArtistPage({
       </div>
 
       <div className='album-slider d-flex'>
-        {artist.albums?.map((album) => {
+        {artist.albums?.map((album, index) => {
           return (
-            <Link to={`/album/${album.name.replaceAll(' ', '_')}/${album.id}`}>
-              <div className='album-wrapper d-flex flex-column mx-2 p-2 rounded-3 shadow c-pointer' key={album.id}>
+            <Link to={`/album/${album.name.replaceAll(' ', '_')}/${album.id}`} key={index}>
+              <div className='album-wrapper d-flex flex-column mx-2 p-2 rounded-3 shadow c-pointer'>
                 <img src={`${environment.API_URL}/${album.image_url}`} alt='' className='rounded-2' width={200}/>
                 <b>{album.name}</b>
                 <b className='opacity-75'>{(() => {
@@ -62,11 +58,8 @@ function ArtistPage({
               key={index}
               index={index}
               track={track}
-              audioRef={audioRef}
               selectTrack={selectTrack}
               currentList={artist.tracks}
-              playTrack={playTrack}
-              pauseTrack={pauseTrack}
               addToFavorite={addToFavorite}
               removeFromFavorite={removeFromFavorite}
               liked={favoriteList.includes(track)}

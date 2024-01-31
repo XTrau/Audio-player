@@ -1,10 +1,10 @@
-import {combineReducers, createStore} from "redux";
-import {currentTrackReducer} from './reducers/trackReducer'
+import {configureStore} from '@reduxjs/toolkit'
+import currentTrackReducer from "./slices/currentTrackSlice";
 
-const rootReducer = combineReducers({
-  currentTrack: currentTrackReducer,
+const store = configureStore({
+  reducer: {
+    currentTrack: currentTrackReducer,
+  }
 })
 
-const store = createStore(rootReducer)
-
-export default store
+export default store;
