@@ -14,6 +14,17 @@ class FileService {
     }
   }
 
+  uploadAudio(audio) {
+    try {
+      const fileName = uuid.v4() + '.mp3'
+      const filePath = path.resolve('static', fileName)
+      audio.mv(filePath)
+      return fileName
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   replaceImage(oldImage, newImage) {
     try {
       const fileName = uuid.v4() + '.jpg'
@@ -27,20 +38,9 @@ class FileService {
     }
   }
 
-  uploadAudio(audio) {
-    try {
-      const fileName = uuid.v4() + '.mp3'
-      const filePath = path.resolve('static', fileName)
-      audio.mv(filePath)
-      return fileName
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
   replaceAudio(oldAudio, newAudio) {
     try {
-      const fileName = uuid.v4() + '.jpg'
+      const fileName = uuid.v4() + '.mp3'
       const prevFilePath = path.resolve('static', oldAudio)
       const filePath = path.resolve('static', fileName)
       fs.rm(prevFilePath, () => {})

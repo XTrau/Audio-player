@@ -52,6 +52,7 @@ class AlbumService {
   }
 
   async getOne(id) {
+    if (!id) throw Error("Не указан ID альбома которые необходимо получить")
     const album = await db.query(
       `SELECT jsonb_build_object(
                       'id', album.id,
@@ -84,30 +85,37 @@ class AlbumService {
                                   WHERE album.id = artist_album.album_id)
               ) AS album
        FROM album
-       WHERE album.id = $1;`, [id])
+       WHERE album.id = $1;`, [id]
+    )
     return album.rows[0].album
   }
 
 
   async update(album, image) {
-    if (!album.id) throw new Error('Не указан ID')
+    if (!album.id || !album.name) throw new Error('Ошибка при обновлении альбома')
     if (image) {
       const prevAlbum = await this.getOne(album.id)
       const newUrl = fileService.replaceImage(prevAlbum.image_url, image)
-      await db.query(`UPDATE album
-                      set image_url=$1
-                      WHERE id = $2
-                      RETURNING *`, [newUrl, album.id])
+      await db.query(
+        `UPDATE album
+         set image_url=$1
+         WHERE id = $2
+         RETURNING *`,
+        [newUrl, album.id]
+      )
     }
-    const updatedAlbum = await db.query(`UPDATE album
-                                         set name=$1
-                                         WHERE id = $2
-                                         RETURNING *`, [album.name, album.id])
+    const updatedAlbum = await db.query(
+      `UPDATE album
+       set name=$1
+       WHERE id = $2
+       RETURNING *`,
+      [album.name, album.id]
+    )
     return updatedAlbum.rows[0]
   }
 
   async delete(id) {
-    if (!id) throw new Error('Не указан ID')
+    if (!id) throw new Error('Не указан ID удаляемого альбома')
     await db.query('DELETE FROM artist_album WHERE album_id = $1', [id])
     const album = await db.query('DELETE FROM album WHERE id = $1 RETURNING *', [id])
     fileService.removeFile(album.rows[0].image_url)

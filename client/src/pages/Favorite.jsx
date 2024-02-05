@@ -10,7 +10,7 @@ function Favorite({
                     removeFromFavorite
                   }) {
   return (
-    <>
+    <div className='wrapper'>
       <div className='d-flex justify-content-between align-items-center'>
         <h1>Избранное</h1>
         <button className='btn btn-primary h-100' onClick={() => shuffleTracks(favoriteList)}>Перемешать</button>
@@ -34,7 +34,7 @@ function Favorite({
       <div className='wrapper-bottom'>
         <b>Всего: {favoriteList.length} треков</b>
       </div>
-    </>
+    </div>
   )
 }
 

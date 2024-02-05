@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
-function AddTrack({
+function TrackToAdd({
                     track,
                     artists,
                     index,
@@ -18,16 +18,25 @@ function AddTrack({
   return (
     <div className='d-flex align-items-center mt-2'>
       <Button variant="standart" component="label" className='p-0'>
-        <img src={track.image} alt="" width={170} height={170} className='object-fit-cover rounded-2 border-0 img-fluid'/>
+        <img src={track.image} alt="" width={170} height={170}
+             className='object-fit-cover rounded-2 border-0 img-fluid'/>
         <input type="file" accept="image/png, image/jpeg, image/jpg"
                onChange={(e) => changeImage(e.target.files[0], index)} hidden/>
       </Button>
       <div className='d-flex flex-column w-100 m-3'>
-        <TextField label='Track title' size='small' value={track.title}
-                   onChange={(e) => changeTitle(e.target.value, index)}/>
-        <TextField label='Artists' size='small' value={artistSearchValue}
+        <TextField label='Track title'
+                   size='small'
+                   value={track.title}
+                   onChange={(e) => changeTitle(e.target.value, index)}
+                   autoComplete='off'
+        />
+        <TextField label='Artists'
+                   size='small'
+                   value={artistSearchValue}
                    onChange={(e) => setArtistSearchValue(e.target.value)}
-                   onFocus={() => setOnArtistSearchFocused(true)} className='my-2'/>
+                   onFocus={() => setOnArtistSearchFocused(true)} className='my-2'
+                   autoComplete='off'
+        />
 
         {
           onArtistSearchFocused &&
@@ -85,4 +94,4 @@ function AddTrack({
   );
 }
 
-export default AddTrack;
+export default TrackToAdd;

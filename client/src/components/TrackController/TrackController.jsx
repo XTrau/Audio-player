@@ -33,16 +33,12 @@ function TrackController() {
   }, [currentTrack.artists])
 
   const updateTrackTime = () => {
-    const percent =
-      audioRef.current.currentTime / (audioRef.current.duration / 100)
-    setTrackTime(prev => isNaN(percent) ? 0 : percent)
+    setTrackTime(audioRef.current.currentTime ? audioRef.current.currentTime : 0)
     getCurrentTime()
   }
 
   const onChangeTrackTime = e => {
-    const percent = e.target.value
-    audioRef.current.currentTime = (percent * audioRef.current.duration) / 100
-    setTrackTime(percent)
+    audioRef.current.currentTime = e.target.value
   }
 
   const onChangeVolume = e => {
@@ -107,7 +103,14 @@ function TrackController() {
 
       <div className='audio-time-controller'>
         <label htmlFor='timeline-range' className='hide-text'>Ползунок времени трека</label>
-        <input type='range' id='timeline-range' value={trackTime} onChange={onChangeTrackTime}/>
+        <input
+          type='range'
+          id='timeline-range'
+          value={trackTime}
+          min={0}
+          max={audioRef.current ? audioRef.current.duration : 99}
+          onChange={onChangeTrackTime}
+        />
         <div className='times'>
           <b>{currentTime}</b>
           <b>{durationTime}</b>

@@ -1,10 +1,9 @@
 header {
   position: fixed;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 15px 20%;
+  padding: 10px 0;
   background: linear-gradient(135deg, #7a7af5, #00a4be);
   user-select: none;
   z-index: 99;
@@ -15,6 +14,7 @@ header {
   }
 
   .search {
+    margin: 0 30px;
     width: 30%;
     input {
       width: 100%;
@@ -25,31 +25,49 @@ header {
 
   .header-right {
     display: flex;
-    justify-content: space-around;
-    margin-right: 40px;
-    width: 40%;
+    width: 100%;
+    justify-content: space-between;
+    .navigation-left {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 70%;
 
-    span {
-      cursor: pointer;
-      font-size: 18px;
-      font-weight: 500;
+      span {
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: 500;
 
-      &::after {
-        content: '';
-        display: block;
-        width: 100%;
-        height: 2px;
-        background: black;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.3s;
-      }
-
-      &:hover {
         &::after {
-          transform: scaleX(1);
+          content: '';
+          display: block;
+          width: 100%;
+          height: 2px;
+          background: black;
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform 0.3s;
+        }
+
+        &:hover {
+          &::after {
+            transform: scaleX(1);
+          }
         }
       }
     }
+
+    .navigation-right {
+      display: flex;
+      flex-direction: column;
+      margin: 0 50px;
+      span {
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+
   }
 }

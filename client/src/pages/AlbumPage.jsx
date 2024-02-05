@@ -22,7 +22,7 @@ function AlbumPage({
   }, [params.id]);
 
   return (
-    <>
+    <div className='wrapper'>
       <div className='album-main d-flex m-2 bg-white p-3'>
         <img src={`${environment.API_URL}/${album.image_url}`} alt='' className='rounded-2' width={150} height={150}/>
         <div className='m-3'>
@@ -55,7 +55,7 @@ function AlbumPage({
           ))}
         </ul>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -9,7 +9,7 @@ function Layout({children, headerProps}) {
       <Header headerProps={headerProps}/>
 
       <main>
-        <div className='wrapper'>
+        <div className='container'>
           {children}
         </div>
       </main>

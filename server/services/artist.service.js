@@ -4,7 +4,7 @@ const fileService = require('../file.service')
 
 class ArtistService {
   async create(artist, image) {
-    if (!image) throw new Error('Нету Файла')
+    if (!image || !artist.name) throw new Error('Ошибка при создании артиста')
     const image_url = fileService.uploadImage(image)
     const createdArtist = await db.query('INSERT INTO artist (name, image_url) VALUES ($1, $2) RETURNING *', [artist.name, image_url])
     return createdArtist.rows[0]
@@ -13,10 +13,10 @@ class ArtistService {
   async getAll() {
     const artists = await db.query(
       `SELECT json_agg(json_build_object(
-                      'id', id,
-                      'name', name,
-                      'image_url', image_url,
-                      'albums', (SELECT jsonb_agg(jsonb_build_object(
+              'id', id,
+              'name', name,
+              'image_url', image_url,
+              'albums', (SELECT jsonb_agg(jsonb_build_object(
                       'id', id,
                       'name', name,
                       'image_url', image_url,
@@ -36,10 +36,10 @@ class ArtistService {
                                                   ))
                                  FROM track t
                                  WHERE t.album_id = alb.id)))
-                                 FROM album alb
-                                          JOIN artist_album aa ON alb.id = aa.album_id
-                                 WHERE aa.artist_id = artist.id)
-              )) as list
+                         FROM album alb
+                                  JOIN artist_album aa ON alb.id = aa.album_id
+                         WHERE aa.artist_id = artist.id)
+                       )) as list
        FROM artist;`
     )
 
@@ -96,16 +96,23 @@ class ArtistService {
     if (!artist.id) throw new Error('Не указан ID')
     if (image) {
       const prevAuthor = await this.getOne(artist.id)
-      const newUrl = fileService.replaceImage(prevAuthor.image_url, image)
-      await db.query(`UPDATE artist
-                      set image_url=$1
-                      WHERE id = $2
-                      RETURNING *`, [newUrl, artist.id])
+      const newImageURL = fileService.replaceImage(prevAuthor.image_url, image)
+      await db.query(
+        `UPDATE artist
+         set image_url=$1
+         WHERE id = $2
+         RETURNING *`,
+        [newImageURL, artist.id]
+      )
     }
-    const updatedAuthor = await db.query(`UPDATE artist
-                                          set name=$1
-                                          WHERE id = $2
-                                          RETURNING *`, [artist.name, artist.id])
+    const updatedAuthor =
+      await db.query(
+        `UPDATE artist
+         set name=$1
+         WHERE id = $2
+         RETURNING *`,
+        [artist.name, artist.id]
+      )
     return updatedAuthor.rows[0]
   }
 

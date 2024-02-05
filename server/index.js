@@ -2,6 +2,7 @@ const express = require('express')
 const authorRouter = require('./routes/artist.routes')
 const albumRouter = require('./routes/album.routes')
 const trackRouter = require('./routes/track.routes')
+const userRouter = require('./routes/user.routes')
 
 const fileUpload = require('express-fileupload')
 const cors = require('cors')
@@ -18,6 +19,7 @@ app.use(cors())
 app.use('/api', authorRouter)
 app.use('/api', albumRouter)
 app.use('/api', trackRouter)
+app.use('/user', userRouter)
 
 app.get('/test', (req, res) => {
   res.json({MESSAGE: "HELLO"});

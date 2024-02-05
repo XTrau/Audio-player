@@ -1,20 +1,21 @@
-import React, {useState, useEffect, useRef, createContext, useMemo} from 'react'
+import React, {useState, useEffect} from 'react'
 import {Routes, Route} from 'react-router-dom'
+import {useDispatch, useSelector} from "react-redux";
 
 import Layout from './components/Layout/Layout'
 
-import Music from './pages/Music'
-import Favorite from './pages/Favorite'
-import AddArtist from './pages/AddArtist'
+import MusicPage from './pages/Music'
+import FavoritePage from './pages/Favorite'
+import AddArtistPage from './pages/AddArtistPage'
 import AddAlbumPage from "./pages/AddAlbumPage";
 import ArtistPage from "./pages/ArtistPage";
 import AlbumPage from "./pages/AlbumPage";
-
-import {useDispatch, useSelector} from "react-redux";
+import RegistrationPage from './pages/RegistrationPage'
+import LoginPage from "./pages/LoginPage";
 
 import axios from './axios'
 
-import {changeTrackList, changeTrackIndex, playTrack, pauseTrack} from "./store/slices/currentTrackSlice";
+import {changeTrackList, changeTrackIndex, changeFullTrackList} from "./store/slices/currentTrackSlice";
 
 function App() {
   const currentTrack = useSelector(store => store.currentTrack.track)
@@ -25,8 +26,12 @@ function App() {
   useEffect(() => {
     axios.get('/api/track').then(data => {
       if (data.data) {
-        selectTrack(0, data.data)
+        shuffleArray(data.data)
+        dispatch(changeFullTrackList(data.data))
+        dispatch(changeTrackList(data.data))
       }
+    }).catch(e => {
+      console.error(e)
     })
   }, [])
 
@@ -35,16 +40,23 @@ function App() {
     dispatch(changeTrackIndex(index))
   }
 
-  function shuffleTracks(array) {
+  function shuffleArray(array) {
     let currentIndex = array.length
     while (currentIndex > 0) {
-      const randomIndex = Math.floor(Math.random() * currentIndex--)
+      const randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex--
       [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]
     }
+    return array
+  }
 
-    for (const index in array) {
-      if (array[index].id === currentTrack.id) {
-        selectTrack(index, array)
+  function shuffleTracks(array) {
+    const arr = shuffleArray([...array])
+    for (const index in arr) {
+      if (arr[index].id === currentTrack.id) {
+        dispatch(changeFullTrackList(arr))
+        dispatch(changeTrackList(arr))
+        dispatch(changeTrackIndex(index))
         return;
       }
     }
@@ -64,7 +76,7 @@ function App() {
         <Route
           path='/'
           element={
-            <Music
+            <MusicPage
               favoriteList={favoriteList}
               search={search}
               shuffleTracks={shuffleTracks}
@@ -76,7 +88,7 @@ function App() {
         <Route
           path='/favorite'
           element={
-            <Favorite
+            <FavoritePage
               favoriteList={favoriteList}
               search={search}
               selectTrack={selectTrack}
@@ -85,7 +97,7 @@ function App() {
               removeFromFavorite={removeFromFavorite}
             />}
         />
-        <Route path='/add_artist' element={<AddArtist/>}/>
+        <Route path='/add_artist' element={<AddArtistPage/>}/>
         <Route path='/add_track' element={<AddAlbumPage/>}/>
         <Route path='/artist/:name/:id' element={
           <ArtistPage
@@ -101,6 +113,8 @@ function App() {
             addToFavorite={addToFavorite}
             removeFromFavorite={removeFromFavorite}
           />}/>
+        <Route path='/registration' element={<RegistrationPage/>}/>
+        <Route path='/login' element={<LoginPage/>}/>
       </Routes>
     </Layout>
   )

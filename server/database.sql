@@ -38,4 +38,14 @@ create TABLE IF NOT EXISTS artist_track
     FOREIGN KEY (track_id) REFERENCES track (id)
 );
 
+create TABLE IF NOT EXISTS users
+(
+    id        SERIAL PRIMARY KEY,
+    email     VARCHAR(255) NOT NULL UNIQUE,
+    password  VARCHAR(255) NOT NULL,
+    username  VARCHAR(255) NOT NULL UNIQUE,
+    activated BOOLEAN DEFAULT FALSE,
+    artist_id INTEGER UNIQUE,
+    FOREIGN KEY (artist_id) REFERENCES artist (id)
+);
 

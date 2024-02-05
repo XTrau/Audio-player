@@ -23,7 +23,7 @@ function ArtistPage({
   }, [params.id]);
 
   return (
-    <>
+    <div className='wrapper'>
       <div className='d-flex m-2 bg-white p-3'>
         <img src={`${environment.API_URL}/${artist.image_url}`} alt='' className='rounded-2' width={150} height={150}/>
         <div className='m-3'>
@@ -68,7 +68,7 @@ function ArtistPage({
           ))}
         </ul>
       </div>
-    </>
+    </div>
   );
 }
 

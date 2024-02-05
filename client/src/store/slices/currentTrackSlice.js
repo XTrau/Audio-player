@@ -3,12 +3,16 @@ import {createSlice} from "@reduxjs/toolkit";
 const currentTrackSlice = createSlice({
   name: "currentTrack",
   initialState: {
+    fullTrackList: [{}],
     trackList: [{}],
     currentTrackIndex: 0,
     track: {},
     paused: true,
   },
   reducers: {
+    changeFullTrackList(state, action) {
+      state.fullTrackList = action.payload
+    },
     changeTrackList(state, action) {
       state.trackList = action.payload
       if (state.currentTrackIndex >= state.trackList.length)
@@ -44,6 +48,7 @@ const currentTrackSlice = createSlice({
 
 export default currentTrackSlice.reducer
 export const {
+  changeFullTrackList,
   changeTrackList,
   changeTrackIndex,
   toNextTrack,

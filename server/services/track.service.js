@@ -3,7 +3,7 @@ const fileService = require('../file.service')
 
 class TrackService {
   async create(track, files) {
-    if (!files.image || !files.audio) throw new Error('Нехватает файлов трека')
+    if (!files.image || !files.audio || !track.name) throw new Error('Нехватает файлов трека')
     const image_url = fileService.uploadImage(files.image)
     const audio_url = fileService.uploadAudio(files.audio)
     const createdTrack = await db.query('INSERT INTO track (name, image_url, audio_url, album_id) VALUES ($1, $2, $3, $4) RETURNING *',

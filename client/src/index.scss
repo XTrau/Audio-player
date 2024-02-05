@@ -41,21 +41,27 @@ li {
   border: none;
 }
 
+ul {
+  padding-left: .8rem;
+}
+
+.container {
+  all: unset
+}
+
 main {
   display: flex;
-  justify-content: center;
-  width: 100%;
-
-  ul {
-    padding-left: .8rem;
+  .container {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+    width: 100%;
   }
 
   .wrapper {
-    margin-top: 90px;
+    width: 60%;
     padding: 20px;
     border-radius: 5px;
-    height: 100%;
-    width: 60%;
     background: rgba(209, 209, 209, .5);
 
     h1 {

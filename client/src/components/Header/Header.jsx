@@ -21,18 +21,28 @@ function Header({headerProps: {search, setSearch}}) {
       </div>
 
       <div className='header-right'>
-        <Link to='/'>
-          <span>Music</span>
-        </Link>
-        <Link to='favorite'>
-          <span>Favorite</span>
-        </Link>
-        <Link to='add_artist'>
-          <span>Add Artist</span>
-        </Link>
-        <Link to='add_track'>
-          <span>Add Album</span>
-        </Link>
+        <nav className='navigation-left'>
+          <Link to='/'>
+            <span>Music</span>
+          </Link>
+          <Link to='favorite'>
+            <span>Favorite</span>
+          </Link>
+          <Link to='add_artist'>
+            <span>Add Artist</span>
+          </Link>
+          <Link to='add_track'>
+            <span>Add Album</span>
+          </Link>
+        </nav>
+        <div className='navigation-right'>
+          <Link to='login'>
+            <span>Login</span>
+          </Link>
+          <Link to='registration'>
+            <span>Registration</span>
+          </Link>
+        </div>
       </div>
     </header>
   )
