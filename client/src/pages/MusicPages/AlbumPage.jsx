@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useParams} from "react-router-dom";
-import axios from "../axios";
-import Track from "../components/Track/Track";
-import environment from '../environment'
+import axios from "../../axios";
+import Track from "../../components/Track/Track";
+import environment from '../../environment'
 
 function AlbumPage({
                      selectTrack,

@@ -1,9 +1,9 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {useParams} from "react-router-dom";
-import axios from "../axios";
-import Track from "../components/Track/Track";
+import axios from "../../axios";
+import Track from "../../components/Track/Track";
 import {Link} from 'react-router-dom'
-import environment from "../environment";
+import environment from "../../environment";
 
 function ArtistPage({
                       selectTrack,

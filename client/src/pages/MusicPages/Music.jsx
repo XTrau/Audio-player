@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import Track from '../components/Track/Track'
+import Track from '../../components/Track/Track'
 import {useSelector} from "react-redux";
 
 function Music({

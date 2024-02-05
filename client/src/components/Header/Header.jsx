@@ -34,6 +34,12 @@ function Header({headerProps: {search, setSearch}}) {
           <Link to='add_track'>
             <span>Add Album</span>
           </Link>
+          <Link to='edit_artist'>
+            <span>Edit Artist</span>
+          </Link>
+          <Link to='edit_track'>
+            <span>Edit Track</span>
+          </Link>
         </nav>
         <div className='navigation-right'>
           <Link to='login'>

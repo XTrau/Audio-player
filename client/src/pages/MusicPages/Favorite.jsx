@@ -1,5 +1,5 @@
 import React from 'react'
-import Track from '../components/Track/Track'
+import Track from '../../components/Track/Track'
 
 function Favorite({
                     favoriteList,

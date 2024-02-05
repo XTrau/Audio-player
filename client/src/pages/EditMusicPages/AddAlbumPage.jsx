@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom'
-import axios from "../axios";
+import axios from "../../axios";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import TrackToAdd from "../components/AddTrack/TrackToAdd";
-import environment from "../environment";
+import TrackToAdd from "../../components/AddTrack/TrackToAdd";
+import environment from "../../environment";
 
 function AddAlbumPage() {
   const [tracksToAdd, setTracksToAdd] = useState([{

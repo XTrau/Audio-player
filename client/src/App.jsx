@@ -4,14 +4,16 @@ import {useDispatch, useSelector} from "react-redux";
 
 import Layout from './components/Layout/Layout'
 
-import MusicPage from './pages/Music'
-import FavoritePage from './pages/Favorite'
-import AddArtistPage from './pages/AddArtistPage'
-import AddAlbumPage from "./pages/AddAlbumPage";
-import ArtistPage from "./pages/ArtistPage";
-import AlbumPage from "./pages/AlbumPage";
-import RegistrationPage from './pages/RegistrationPage'
-import LoginPage from "./pages/LoginPage";
+import MusicPage from './pages/MusicPages/Music'
+import FavoritePage from './pages/MusicPages/Favorite'
+import AddArtistPage from './pages/EditMusicPages/AddArtistPage'
+import AddAlbumPage from "./pages/EditMusicPages/AddAlbumPage";
+import ArtistPage from "./pages/MusicPages/ArtistPage";
+import AlbumPage from "./pages/MusicPages/AlbumPage";
+import RegistrationPage from './pages/LoginPages/RegistrationPage'
+import LoginPage from "./pages/LoginPages/LoginPage";
+import EditArtistPage from "./pages/EditMusicPages/EditArtistPage";
+import EditTrackPage from "./pages/EditMusicPages/EditTrackPage";
 
 import axios from './axios'
 
@@ -115,6 +117,8 @@ function App() {
           />}/>
         <Route path='/registration' element={<RegistrationPage/>}/>
         <Route path='/login' element={<LoginPage/>}/>
+        <Route path='/edit_artist' element={<EditArtistPage/>}/>
+        <Route path='/edit_track' element={<EditTrackPage/>}/>
       </Routes>
     </Layout>
   )
