@@ -31,7 +31,7 @@ class TrackController {
 
   async update(req, res) {
     try {
-      const track = await trackService.update(req.body.name, req.files)
+      const track = await trackService.update(req.body, req.files)
       res.json(track)
     } catch (e) {
       res.status(500).json(e)

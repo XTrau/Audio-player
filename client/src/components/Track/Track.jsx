@@ -46,8 +46,7 @@ function Track({
           }
         </div>
       </div>
-      <button className='like-btn hide-text'
-              onClick={liked ? () => removeFromFavorite(track) : () => addToFavorite(track)}>
+      <button className='like-btn hide-text' onClick={liked ? () => removeFromFavorite(track) : () => addToFavorite(track)}>
         {liked ? 'like' : 'unlike'}
         <svg
           width='32'

@@ -2,22 +2,13 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import './Header.scss'
 
-function Header({headerProps: {search, setSearch}}) {
+function Header() {
   return (
     <header>
       <div className='header-left'>
         <Link to='/'>
           <h2>AudioPlayer</h2>
         </Link>
-      </div>
-
-      <div className='search'>
-        <input
-          type='text'
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          placeholder='Поиск...'
-        />
       </div>
 
       <div className='header-right'>
@@ -33,12 +24,6 @@ function Header({headerProps: {search, setSearch}}) {
           </Link>
           <Link to='add_track'>
             <span>Add Album</span>
-          </Link>
-          <Link to='edit_artist'>
-            <span>Edit Artist</span>
-          </Link>
-          <Link to='edit_track'>
-            <span>Edit Track</span>
           </Link>
         </nav>
         <div className='navigation-right'>

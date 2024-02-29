@@ -49,8 +49,15 @@ ul {
   all: unset
 }
 
+
+.MuiSkeleton-root {
+  transform: scale(1, 1) !important;
+  -webkit-transform: scale(1, 1) !important;
+}
+
 main {
   display: flex;
+
   .container {
     display: flex;
     justify-content: center;

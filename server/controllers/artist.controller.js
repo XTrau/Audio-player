@@ -32,6 +32,7 @@ class ArtistController {
 
   async update(req, res) {
     try {
+      console.log(req.body)
       const updatedAuthor = await artistService.update(req.body, req.files?.image)
       res.json(updatedAuthor)
     } catch (e) {

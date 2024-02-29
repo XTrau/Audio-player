@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useMemo, useReducer, useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import './TrackController.scss'
 import ArtistList from "../ArtistsList/ArtistList";
@@ -25,12 +25,6 @@ function TrackController() {
     if (paused) audioRef.current.pause()
     else audioRef.current.play()
   }, [paused, currentTrack])
-
-  const artistText = useMemo(() => {
-    if (!currentTrack.artists) return ''
-    const text = currentTrack.artists?.reduce((acc, artist) => acc + artist.name + ', ', '')
-    return text.substring(0, text.length - 2)
-  }, [currentTrack.artists])
 
   const updateTrackTime = () => {
     setTrackTime(audioRef.current.currentTime ? audioRef.current.currentTime : 0)
@@ -107,8 +101,7 @@ function TrackController() {
           type='range'
           id='timeline-range'
           value={trackTime}
-          min={0}
-          max={audioRef.current ? audioRef.current.duration : 99}
+          max={audioRef.current ? audioRef.current.duration ? audioRef.current.duration : 99 : 99}
           onChange={onChangeTrackTime}
         />
         <div className='times'>

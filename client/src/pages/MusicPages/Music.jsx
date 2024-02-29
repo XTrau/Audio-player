@@ -1,10 +1,9 @@
-import React, {useEffect} from 'react'
 import Track from '../../components/Track/Track'
 import {useSelector} from "react-redux";
+import TrackSkeleton from "../../components/Track/TrackSkeleton";
 
 function Music({
                  favoriteList,
-                 search,
                  shuffleTracks,
                  selectTrack,
                  addToFavorite,
@@ -18,20 +17,31 @@ function Music({
         <button className='btn btn-primary h-100' onClick={() => shuffleTracks(trackList)}>Перемешать</button>
       </div>
       <ul className='d-flex flex-column'>
-        {trackList?.map((track, index) => (
-          <Track
-            key={index}
-            index={index}
-            track={track}
-            selectTrack={selectTrack}
-            currentList={trackList}
-            addToFavorite={addToFavorite}
-            removeFromFavorite={removeFromFavorite}
-            liked={favoriteList.includes(track)}
-          />
-        ))}
+        {
+          trackList.length ?
+          (trackList.map((track, index) => (
+            <Track
+              key={index}
+              index={index}
+              track={track}
+              selectTrack={selectTrack}
+              currentList={trackList}
+              addToFavorite={addToFavorite}
+              removeFromFavorite={removeFromFavorite}
+              liked={favoriteList.includes(track)}
+            />
+          ))) :
+            (
+              <>
+                <TrackSkeleton/>
+                <TrackSkeleton/>
+                <TrackSkeleton/>
+                <TrackSkeleton/>
+                <TrackSkeleton/>
+              </>
+            )
+        }
       </ul>
-
       <div className='wrapper-bottom'>
         <b>Всего: {trackList.length} треков</b>
       </div>

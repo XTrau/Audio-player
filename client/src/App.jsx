@@ -13,25 +13,21 @@ import AlbumPage from "./pages/MusicPages/AlbumPage";
 import RegistrationPage from './pages/LoginPages/RegistrationPage'
 import LoginPage from "./pages/LoginPages/LoginPage";
 import EditArtistPage from "./pages/EditMusicPages/EditArtistPage";
-import EditTrackPage from "./pages/EditMusicPages/EditTrackPage";
 
-import axios from './axios'
+import trackFetcher from "./dataFetchers/track.fetcher";
 
 import {changeTrackList, changeTrackIndex, changeFullTrackList} from "./store/slices/currentTrackSlice";
 
 function App() {
   const currentTrack = useSelector(store => store.currentTrack.track)
   const [favoriteList, setFavoriteList] = useState([])
-  const [search, setSearch] = useState('')
   const dispatch = useDispatch()
 
   useEffect(() => {
-    axios.get('/api/track').then(data => {
-      if (data.data) {
-        shuffleArray(data.data)
-        dispatch(changeFullTrackList(data.data))
-        dispatch(changeTrackList(data.data))
-      }
+    trackFetcher.getAll().then(data => {
+      shuffleArray(data)
+      dispatch(changeFullTrackList(data))
+      dispatch(changeTrackList(data))
     }).catch(e => {
       console.error(e)
     })
@@ -73,14 +69,13 @@ function App() {
   }
 
   return (
-    <Layout headerProps={{search, setSearch}}>
+    <Layout>
       <Routes>
         <Route
           path='/'
           element={
             <MusicPage
               favoriteList={favoriteList}
-              search={search}
               shuffleTracks={shuffleTracks}
               selectTrack={selectTrack}
               addToFavorite={addToFavorite}
@@ -92,7 +87,6 @@ function App() {
           element={
             <FavoritePage
               favoriteList={favoriteList}
-              search={search}
               selectTrack={selectTrack}
               shuffleTracks={shuffleTracks}
               addToFavorite={addToFavorite}
@@ -115,10 +109,9 @@ function App() {
             addToFavorite={addToFavorite}
             removeFromFavorite={removeFromFavorite}
           />}/>
+        <Route path='/artist/:name/:id/edit' element={<EditArtistPage/>}/>
         <Route path='/registration' element={<RegistrationPage/>}/>
         <Route path='/login' element={<LoginPage/>}/>
-        <Route path='/edit_artist' element={<EditArtistPage/>}/>
-        <Route path='/edit_track' element={<EditTrackPage/>}/>
       </Routes>
     </Layout>
   )

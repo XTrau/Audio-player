@@ -3,8 +3,8 @@ import {createSlice} from "@reduxjs/toolkit";
 const currentTrackSlice = createSlice({
   name: "currentTrack",
   initialState: {
-    fullTrackList: [{}],
-    trackList: [{}],
+    fullTrackList: [],
+    trackList: [],
     currentTrackIndex: 0,
     track: {},
     paused: true,

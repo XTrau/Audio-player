@@ -3,7 +3,6 @@ import Track from '../../components/Track/Track'
 
 function Favorite({
                     favoriteList,
-                    search,
                     selectTrack,
                     shuffleTracks,
                     addToFavorite,

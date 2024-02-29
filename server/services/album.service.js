@@ -3,10 +3,9 @@ const fileService = require('../file.service')
 
 class AlbumService {
   async create(album, image) {
-    if (!album.name || !album.artists || !image) throw Error('Заполнены не все поля')
+    if (!album.title || !album.artists || !image) throw Error('Заполнены не все поля')
     const image_url = fileService.uploadImage(image)
-    const newAlbum = await db.query('INSERT INTO album (name, image_url) VALUES ($1, $2) RETURNING *', [album.name, image_url])
-
+    const newAlbum = await db.query('INSERT INTO album (name, image_url) VALUES ($1, $2) RETURNING *', [album.title, image_url])
     const artists = JSON.parse(album.artists)
     for (const artist of artists)
       await db.query('INSERT INTO artist_album (artist_id, album_id) VALUES ($1, $2)', [artist.id, newAlbum.rows[0].id])

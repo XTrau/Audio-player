@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom'
-import axios from "../../axios";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import TrackToAdd from "../../components/AddTrack/TrackToAdd";
 import environment from "../../environment";
+import artistFetcher from "../../dataFetchers/artist.fetcher";
+import albumFetcher from "../../dataFetchers/album.fetcher";
+import trackFetcher from "../../dataFetchers/track.fetcher";
 
 function AddAlbumPage() {
   const [tracksToAdd, setTracksToAdd] = useState([{
@@ -21,11 +23,9 @@ function AddAlbumPage() {
   const [onArtistSearchFocused, setOnArtistSearchFocused] = useState(false)
 
   useEffect(() => {
-    axios.get('/api/artist')
-      .then(data => {
-        shuffleArtists(data.data)
-      })
-      .catch(err => console.log(err))
+    artistFetcher.getAll().then(artists => {
+      setArtists(artists)
+    }).catch(err => console.log(err))
   }, [])
 
   const shuffleArtists = (array) => {
@@ -113,14 +113,14 @@ function AddAlbumPage() {
       }
     }
 
-    const fd = new FormData()
-    fd.append('artists', JSON.stringify(albumArtists))
-    fd.append('name', albumTitle)
-    fd.append('image', albumImageFile)
+    const album = {
+      artists: JSON.stringify(albumArtists),
+      title: albumTitle,
+      image: albumImageFile
+    }
 
-    axios.post('/api/album', fd).then((res) => {
-      console.log(res.data)
-      sendTracks(res.data.id)
+    albumFetcher.create(album).then((album) => {
+      sendTracks(album.id)
       alert("Added")
     }).catch((err) => {
       console.log(err)
@@ -132,17 +132,15 @@ function AddAlbumPage() {
       return;
 
     for (const track of tracksToAdd) {
-      const fd = new FormData()
-      fd.append('name', track.title)
-      fd.append('artists', JSON.stringify(track.artists))
-      fd.append('album_id', album_id)
-      fd.append('image', track.imageFile)
-      fd.append('audio', track.audio)
+      const newTrack = {
+        title: track.title,
+        artists: JSON.stringify(track.artists),
+        image: track.imageFile,
+        album_id: album_id,
+        audio: track.audio
+      }
 
-      await axios.post('/api/track', fd).then(res => {
-        console.log(res)
-        console.log("Track Added")
-      }).catch(e => console.log(e))
+      await trackFetcher.create(newTrack)
     }
   }
 

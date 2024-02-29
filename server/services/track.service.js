@@ -3,11 +3,11 @@ const fileService = require('../file.service')
 
 class TrackService {
   async create(track, files) {
-    if (!files.image || !files.audio || !track.name) throw new Error('Нехватает файлов трека')
+    if (!files.image || !files.audio || !track.title) throw new Error('Нехватает файлов трека')
     const image_url = fileService.uploadImage(files.image)
     const audio_url = fileService.uploadAudio(files.audio)
     const createdTrack = await db.query('INSERT INTO track (name, image_url, audio_url, album_id) VALUES ($1, $2, $3, $4) RETURNING *',
-      [track.name, image_url, audio_url, track.album_id])
+      [track.title, image_url, audio_url, track.album_id])
 
     const artists = JSON.parse(track.artists)
     for (const artist of artists) {
@@ -56,6 +56,7 @@ class TrackService {
 
 
   async update(track, files) {
+    if (!track.title || !track.id) throw Error("Нету данных трека")
     const oldTrack = db.query(`SELECT *
                                FROM track
                                WHERE id = $1`, [track.id])
@@ -71,7 +72,7 @@ class TrackService {
                       set audio_url=$1
                       WHERE id = $2`, [newUrl, track.id])
     }
-    const newTrack = db.query('UPDATE track set name = $1 WHERE id = $2 RETURNING *', [track.name, track.id])
+    const newTrack = db.query('UPDATE track set name = $1 WHERE id = $2 RETURNING *', [track.title, track.id])
     return newTrack.rows[0]
   }
 

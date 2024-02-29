@@ -3,10 +3,10 @@ import React, {useContext, useState} from 'react'
 import Header from '../Header/Header'
 import TrackController from "../TrackController/TrackController";
 
-function Layout({children, headerProps}) {
+function Layout({children}) {
   return (
     <>
-      <Header headerProps={headerProps}/>
+      <Header/>
 
       <main>
         <div className='container'>
