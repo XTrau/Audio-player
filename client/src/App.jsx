@@ -6,13 +6,17 @@ import Layout from './components/Layout/Layout'
 
 import MusicPage from './pages/MusicPages/Music'
 import FavoritePage from './pages/MusicPages/Favorite'
+
 import AddArtistPage from './pages/EditMusicPages/AddArtistPage'
 import AddAlbumPage from "./pages/EditMusicPages/AddAlbumPage";
+
 import ArtistPage from "./pages/MusicPages/ArtistPage";
 import AlbumPage from "./pages/MusicPages/AlbumPage";
 import RegistrationPage from './pages/LoginPages/RegistrationPage'
 import LoginPage from "./pages/LoginPages/LoginPage";
+
 import EditArtistPage from "./pages/EditMusicPages/EditArtistPage";
+import EditTrackPage from "./pages/EditMusicPages/EditTrackPage";
 
 import trackFetcher from "./dataFetchers/track.fetcher";
 
@@ -110,6 +114,7 @@ function App() {
             removeFromFavorite={removeFromFavorite}
           />}/>
         <Route path='/artist/:name/:id/edit' element={<EditArtistPage/>}/>
+        <Route path='/track/:id/edit' element={<EditTrackPage/>}/>
         <Route path='/registration' element={<RegistrationPage/>}/>
         <Route path='/login' element={<LoginPage/>}/>
       </Routes>

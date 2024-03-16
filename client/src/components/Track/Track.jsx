@@ -1,23 +1,20 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './Track.scss'
 import {useDispatch, useSelector} from "react-redux";
 import ArtistList from "../ArtistsList/ArtistList";
 import environment from "../../environment";
 import {playTrack, pauseTrack} from "../../store/slices/currentTrackSlice";
+import {Link} from 'react-router-dom'
 
 function Track({
-                 track,
-                 index,
-                 selectTrack,
-                 currentList,
-                 addToFavorite,
-                 removeFromFavorite,
-                 liked
+                 track, index, selectTrack, currentList, addToFavorite, removeFromFavorite, liked
                }) {
   const currentTrack = useSelector(store => store.currentTrack.track)
   const paused = useSelector(store => store.currentTrack.paused)
   const playNow = track.id === currentTrack.id && !paused
   const dispatch = useDispatch()
+  const [onSettings, setOnSettings] = useState(false)
+  const [settingPosition, setSettingPosition] = useState({x: 0, y: 0})
 
   function onClickPlay() {
     selectTrack(index, currentList)
@@ -28,7 +25,7 @@ function Track({
     dispatch(pauseTrack())
   }
 
-  return (
+  return (<>
     <li className={(playNow ? 'play' : '') + ' track-wrapper shadow'}>
       <button
         className='play-btn hide-text'
@@ -40,13 +37,11 @@ function Track({
       <div className='track-info'>
         <div className='title'>
           <span>{track.name}</span>
-          {
-            track.artists &&
-            <ArtistList artists={track.artists}/>
-          }
+          {track.artists && <ArtistList artists={track.artists}/>}
         </div>
       </div>
-      <button className='like-btn hide-text' onClick={liked ? () => removeFromFavorite(track) : () => addToFavorite(track)}>
+      <button className='like-btn hide-text'
+              onClick={liked ? () => removeFromFavorite(track) : () => addToFavorite(track)}>
         {liked ? 'like' : 'unlike'}
         <svg
           width='32'
@@ -66,11 +61,24 @@ function Track({
           />
         </svg>
       </button>
-      <button className='three-dot-btn'>
+      <button className='three-dot-btn' onClick={(e) => {
+        setOnSettings(prev => !prev)
+        setSettingPosition(prev => {
+          return {
+            x: e.pageX + 10,
+            y: e.pageY + 10
+          }
+        })
+      }}>
         <div className='three-dot hide-text'>settings</div>
       </button>
     </li>
-  )
+
+    <div className={`position-absolute ${onSettings ? 'd-flex' : 'hidden'} bg-white rounded-2 px-2 flex-column`}
+         style={{left: `${settingPosition.x}px`, top: `${settingPosition.y}px`}}>
+      <Link to={`track/${track.id}/edit`}>Edit</Link>
+    </div>
+  </>)
 }
 
 export default Track

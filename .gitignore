@@ -4,3 +4,5 @@ server/static/*.mp3
 server/static/*.jpg
 server/static/*.jpeg
 server/static/*.png
+
+.env
